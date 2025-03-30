@@ -1,21 +1,35 @@
-function LoginComponent()
-{
-    return (<>      
-        <div>
-            <div>              
-                <label >Usuário: </label>
-                <input placeholder="Digite seu nome de usuário"></input>            
+function LoginComponent() {
+    return (
+        <div className="min-h-screen flex items-center justify-center">
+            <div className="grid-main">
+                <form action="">
+                    <div>
+                        <label htmlFor="login" className="block mb-4">Login:
+                            <input type="text"
+                                id="login"
+                                className="input-text mt-2"
+                                placeholder="Digite seu login" />
+                        </label>
+                    </div>
+
+                    <div>
+                        <label htmlFor="senha" className="block mb-4">Senha:
+                            <input type="password"
+                                id="senha"
+                                className="input-text mt-2"
+                                placeholder="Digite sua senha" />
+                        </label>
+
+                    </div>
+
+                    <div className="flex justify-between mt-4">
+                        <button className="button-secondary">Cadastrar</button>
+                        <button className="button-primary">Entrar</button>
+                    </div>
+                </form>
             </div>
-            <div>
-                <label>Senha: </label>
-                <input type="password" placeholder="******"></input>
-            </div>
-            <div>
-                <button className="button-primary">Login</button>
-                <button>Cadastrar</button>
-            </div>           
         </div>
-    </>)
+    );
 }
 
-export default LoginComponent
+export default LoginComponent;

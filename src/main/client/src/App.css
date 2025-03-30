@@ -1,34 +1,24 @@
 @import "tailwindcss";
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+@theme{
+  --color-laranja: #dc4435;
+  --color-amarelo: #fff275;
+  --color-laranjaClaro: #e0793a;
+  --color-roxoClaro: #b3a2d0;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
-
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
-}
-
-.hover\:bg-sky-700{
-  &:hover{
-    background-color: aliceblue;
-  }
+.grid-main {
+  @apply box-content w-100 border p-5 shadow-md rounded-sm flex flex-col gap-4 bg-gray-100;
 }
 
 .button-primary {
-  @apply text-lg font-bold text-gray-900 bg-red-500
+  @apply border rounded-lg border-solid p-3 pl-4 pr-4 text-lg font-bold text-white bg-laranja rounded-lg;
+}
+
+.button-secondary {
+  @apply border rounded-lg border-solid p-3 pl-4 pr-4 text-lg font-bold text-white bg-laranjaClaro rounded-lg;
+}
+
+.input-text {
+  @apply border rounded p-2 w-full bg-white;
 }

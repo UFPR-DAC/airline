@@ -1,12 +1,14 @@
 import './App.css'
-import  LoginComponent from './pages/login/LoginComponent'
+import HeaderComponent from './pages/header/HeaderComponent'
+import LoginComponent from './pages/login/LoginComponent'
 
 function App() {
 
   return (
     <>
       <div>
-        <LoginComponent></LoginComponent>
+        <HeaderComponent />
+        <LoginComponent />
       </div>
     </>
   )
