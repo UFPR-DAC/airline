@@ -1,3 +1,4 @@
+
 import { useForm } from 'react-hook-form';
 
 export default function Cadastro() {
@@ -18,7 +19,7 @@ export default function Cadastro() {
     }
 
     return (
-        <div className="flex justify-center items-center min-h-screen p-8 bg-gray-200">  {/* bg-gradient-to-r from-purple-300 via-yellow-300 to-red-500 */}
+        <div className="flex justify-center items-center min-h-screen p-8 bg-gray-200">
             <form className="bg-white p-8 rounded-2xl shadow-md w-full max-w-3xl">
                 <h1 className="text-2xl font-bold mb-6 text-center">Cadastro</h1>
 
