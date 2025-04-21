@@ -4,7 +4,8 @@ export default function HeaderComponent() {
     const navigate = useNavigate();
 
     return (
-        <nav className="flex items-center h-16 w-full bg-gradient-to-r from-purple-300 via-yellow-300 to-red-500 text-white font-semibold">
+        //fixed top-0 z-50 
+        <nav className="fixed top-0 z-50 flex items-center h-16 w-full bg-gradient-to-r from-purple-300 via-yellow-300 to-red-500 text-white font-semibold">
             <div className="max-w-screen-xl flex items-center p-3 h-16">
 
                 <div className="flex items-center space-x-3 mr-10">

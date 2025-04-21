@@ -8,7 +8,7 @@ import LoginComponent from "./pages/login/LoginComponent.tsx";
 import ClientHome from "./pages/ClientHome";
 import CadastroComponent from './pages/cadastro/CadastroComponent.tsx';
 import HeaderComponent from './pages/header/HeaderComponent.tsx';
-import ComprarMilhas from './components/ComprarMilhas/ComprarMilhas.tsx';
+import ComprarMilhasComponent from './pages/Milhas/Comprar/ComprarMilhasComponent.tsx';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -18,7 +18,7 @@ createRoot(document.getElementById('root')!).render(
               <Route path="/" element={<ClientHome />}/>
               <Route path="login"  element={<LoginComponent />} />
               <Route path="cadastro" element={<CadastroComponent/>} />
-              <Route path="comprar/milhas" element={<ComprarMilhas/>} />
+              <Route path="milhas/comprar" element={<ComprarMilhasComponent/>} />
           </Routes>
       </BrowserRouter>
   </StrictMode>,
