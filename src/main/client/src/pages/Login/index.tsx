@@ -1,4 +1,4 @@
-function LoginComponent() {
+export default function Login() {
     return (
         <div className="min-h-screen flex items-center justify-center">
             <div className="grid-main">
@@ -31,5 +31,3 @@ function LoginComponent() {
         </div>
     );
 }
-
-export default LoginComponent;
