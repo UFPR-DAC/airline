@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { getYearFromNowMonths, getDaysForMonth } from "../../utils/date/calendar.js";
 
-export default function FlightSearch() {
+export default function FlightParams() {
   const [isDatepickerOpen, setIsDatepickerOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const months = getYearFromNowMonths();
@@ -28,7 +28,7 @@ export default function FlightSearch() {
                   id="origin"
                   name="origin"
                   type="text"
-                  placeholder="Curitiba (CWB)"
+                  value="Curitiba (CWB)"
                   className="block min-w-0 grow py-1.5 pr-3 pl-1 text-base text-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-sm/6"
                 />
               </div>
@@ -48,7 +48,7 @@ export default function FlightSearch() {
                   id="destination"
                   name="destination"
                   type="text"
-                  placeholder="São Paulo (GRU)"
+                  value="São Paulo (GRU)"
                   className="block min-w-0 grow py-1.5 pr-3 pl-1 text-base text-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-sm/6"
                 />
               </div>
@@ -69,7 +69,7 @@ export default function FlightSearch() {
                 id="date"
                 name="date"
                 type="text"
-                placeholder="10/04/2025 - 17/04/2025"
+                value="10/04/2025 - 17/04/2025"
                 onClick={handleDatepicker}
                 className="block min-w-0 grow py-1.5 pr-3 pl-1 text-base text-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-sm/6"
               />

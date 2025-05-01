@@ -1,11 +1,10 @@
-import React from 'react'
-import { StrictMode } from "react";
+import { lazy, StrictMode } from "react";
 import { createRoot } from 'react-dom/client'
 import './index.css'
-import App from './App.tsx'
 import {BrowserRouter, Routes, Route} from "react-router";
-import LoginComponent from "./pages/login/LoginComponent.tsx";
-import ClientHome from "./pages/ClientHome";
+const Login = lazy(() => import('../src/pages/Login'));
+const ClientHome = lazy(() => import('../src/pages/ClientHome'));
+const SearchResults = lazy(() => import('../src/pages/SearchResults'));
 import CadastroComponent from './pages/cadastro/CadastroComponent.tsx';
 
 createRoot(document.getElementById('root')!).render(
@@ -13,8 +12,9 @@ createRoot(document.getElementById('root')!).render(
       <BrowserRouter>
           <Routes>
               <Route path="/" element={<ClientHome />}/>
-              <Route path="login"  element={<LoginComponent />} />
+              <Route path="login"  element={<Login />} />
               <Route path="cadastro" element={<CadastroComponent/>} />
+              <Route path="search" element={<SearchResults />}/>
           </Routes>
       </BrowserRouter>
   </StrictMode>,

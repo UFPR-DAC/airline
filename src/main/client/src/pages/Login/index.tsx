@@ -1,4 +1,4 @@
-function LoginComponent() {
+export default function Login() {
     return (
         <div className="min-h-screen flex items-center justify-center">
             <div className="grid-main">
@@ -19,7 +19,6 @@ function LoginComponent() {
                                 className="input-text mt-2"
                                 placeholder="Digite sua senha" />
                         </label>
-
                     </div>
 
                     <div className="flex justify-between mt-4">
@@ -31,5 +30,3 @@ function LoginComponent() {
         </div>
     );
 }
-
-export default LoginComponent;
