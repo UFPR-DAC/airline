@@ -1,5 +1,3 @@
-import Cadastro from "../../components/Cadastro/Cadastro";
-
 function CadastroComponent() {
 	return (
 		<div className="min-h-screen flex items-center justify-center">

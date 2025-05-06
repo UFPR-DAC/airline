@@ -1,6 +1,8 @@
 import { BrowserRouter, Routes, Route } from 'react-router'
 import './App.css'
 import { lazy } from 'react'
+import ComprarMilhasComponent from './pages/Milhas/Comprar/ComprarMilhasComponent'
+import CadastroComponent from './pages/cadastro/CadastroComponent'
 const Header = lazy(() => import('../src/components/Header/Header'))
 const Signup = lazy(() => import('../src/pages/Signup/Signup'))
 const ClientLogin = lazy(() => import('./pages/ClientLogin'))
@@ -18,8 +20,10 @@ function App() {
 						<Route path="/" element={<ClientHome />} />
 						<Route path="/cadastro" element={<Signup />} />
 						<Route path="/login" element={<ClientLogin />} />
-						<Route path="/pesquisa" element={<SearchResults />} />
+						<Route path="/busca" element={<SearchResults />} />
 						<Route path="/cliente/:clientId" element={<ClientDashboard />} />
+						<Route path="/milhas/comprar" element={<ComprarMilhasComponent />} />
+						<Route path="/cad" element={<CadastroComponent />} />
 					</Routes>
 				</main>
 			</div>
