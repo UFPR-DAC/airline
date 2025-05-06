@@ -1,0 +1,24 @@
+@import 'tailwindcss';
+
+@theme {
+	--color-laranja: #dc4435;
+	--color-amarelo: #fff275;
+	--color-laranjaClaro: #e0793a;
+	--color-roxoClaro: #b3a2d0;
+}
+
+.grid-main {
+	@apply box-content w-100 border p-5 shadow-md rounded-sm flex flex-col gap-4 bg-gray-100;
+}
+
+.button-primary {
+	@apply border rounded-lg border-solid p-3 pl-4 pr-4 text-lg font-bold text-white bg-laranja;
+}
+
+.button-secondary {
+	@apply border rounded-lg border-solid p-3 pl-4 pr-4 text-lg font-bold text-white bg-laranjaClaro;
+}
+
+.input-text {
+	@apply border rounded p-2 w-full bg-white;
+}
