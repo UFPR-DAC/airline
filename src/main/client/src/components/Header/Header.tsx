@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 export default function Header() {
 	const navigate = useNavigate()
@@ -24,8 +25,9 @@ export default function Header() {
 			<button
 				key="login"
 				onClick={() => navigate('/login')}
-				className={`flex w-60 py-4 px-6 text-center justify-center font-medium rounded-t-2xl cursor-pointer text-black hover:underline`}
+				className={`flex w-60 py-4 px-6 text-center justify-center items-center gap-4 font-medium rounded-t-2xl cursor-pointer text-black hover:underline`}
 			>
+				<FontAwesomeIcon icon={['fas', 'user']} />
 				Minha conta
 			</button>
 		</nav>

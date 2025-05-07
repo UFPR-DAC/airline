@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { getYearFromNowMonths, getDaysForMonth } from '../../utils/date/calendar.js'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 export default function FlightSearch() {
 	const [isDatepickerOpen, setIsDatepickerOpen] = useState(false)
@@ -32,6 +33,10 @@ export default function FlightSearch() {
 							</div>
 						</div>
 					</div>
+					{/*<FontAwesomeIcon
+						icon={['fas', 'right-left']}
+						className="px-4 py-4 rounded-full absolute right-170 top-33 border-1 border-gray-300 bg-white"
+					/>*/}
 					<div className="flex items-center rounded-r-md outline-1 outline-gray-300 bg-white pl-3 has-[input:focus-within]:outline-2 has-[input:focus-within]:-outline-offset-2 has-[input:focus-within]:outline-green-400">
 						<label htmlFor="origin" className="block text-sm/6 font-medium text-gray-900">
 							Destino
