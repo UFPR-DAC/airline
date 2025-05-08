@@ -64,7 +64,7 @@ export default function Signup() {
 	return (
 		<div className="flex flex-col items-center justify-center gap-8">
 			<h1 className="font-medium">Cadastro</h1>
-			<form onSubmit={handleSubmit(onSubmit)} className="flex flex-col w-lg h-fit gap-4">
+			<form onSubmit={handleSubmit(onSubmit)} className="flex flex-col w-lg h-100vh gap-4">
 				<div className="input-container w-64">
 					<label htmlFor="cpf" className="input-label">
 						CPF
