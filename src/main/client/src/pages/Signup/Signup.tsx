@@ -1,5 +1,5 @@
 import { useForm } from 'react-hook-form'
-import { User } from '../../types/user'
+import { UserSignup } from '../../validations/user'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useHookFormMask } from 'use-mask-input'
 import { useQuery } from '@tanstack/react-query'
@@ -15,12 +15,12 @@ export default function Signup() {
 		watch,
 		setValue,
 		formState: { errors },
-	} = useForm<User>({
-		resolver: zodResolver(User),
+	} = useForm<UserSignup>({
+		resolver: zodResolver(UserSignup),
 		mode: 'onChange',
 	})
 	const registerWithMask = useHookFormMask(register)
-	const onSubmit = (data: User) => console.log(data)
+	const onSubmit = (data: UserSignup) => console.log(data)
 
 	const cepSujo = watch('cep')
 	const inputNumeroRef = useRef<HTMLInputElement>(null)

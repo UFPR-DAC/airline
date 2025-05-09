@@ -1,28 +1,43 @@
 import { useForm } from 'react-hook-form'
-import { Login, LoginForm } from '../../types/login'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useAuth } from '../../contexts/AuthContext'
+import { UserLogin } from '../../validations/user'
+import { useNavigate } from 'react-router'
+import { fetchUserByEmail } from '../../services/user'
 
 export default function ClientLogin() {
+	const { login } = useAuth()
+	const navigate = useNavigate()
 	const {
 		register,
 		handleSubmit,
 		formState: { errors },
-	} = useForm<LoginForm>({
-		resolver: zodResolver(Login),
+	} = useForm<UserLogin>({
+		resolver: zodResolver(UserLogin),
 		mode: 'onChange',
 	})
-	const onSubmit = (data: LoginForm) => console.log(data)
+	const onSubmit = async (data: UserLogin) => {
+		const userData = await fetchUserByEmail(data.email)
+		if (!userData) {
+			alert('Usuário não encontrado!')
+			return
+		} else {
+			console.log(userData)
+		}
+		login(userData)
+		navigate(`/cliente/${userData.cpf}`)
+	}
 
 	return (
 		<div className="flex flex-col items-center justify-center gap-8">
 			<h1 className="font-medium">Login</h1>
 			<form onSubmit={handleSubmit(onSubmit)} className="flex flex-col w-lg h-fit items-center gap-4">
 				<div className="input-container w-84">
-					<label htmlFor="cpf" className="input-label">
-						CPF
+					<label htmlFor="email" className="input-label">
+						E-mail
 					</label>
-					<input id="cpf" type="tel" {...register('cpf')} className="input-base" />
-					{errors.cpf && <p className="input-error-msg">{errors.cpf?.message}</p>}
+					<input id="email" type="text" {...register('email')} className="input-base" />
+					{errors.email && <p className="input-error-msg">{errors.email?.message}</p>}
 				</div>
 				<div className="input-container w-84">
 					<label htmlFor="senha" className="input-label">
