@@ -20,7 +20,9 @@ export default function Signup() {
 		mode: 'onChange',
 	})
 	const registerWithMask = useHookFormMask(register)
-	const onSubmit = (data: UserSignup) => console.log(data)
+	const onSubmit = (data: UserSignup) => {
+		alert(`Usuário ${data.nome} criado!`)
+	}
 
 	const cepSujo = watch('cep')
 	const inputNumeroRef = useRef<HTMLInputElement>(null)
