@@ -14,4 +14,17 @@ export const mockUsers: UserSignup[] = [
 		cidade: 'Curitiba',
 		estado: 'PR',
 	},
+	{
+		cpf: '111.111.111-11',
+		email: 'rafael@gmail.com',
+		nome: 'Rafael Rodrigues Estefanes',
+		saldoMilhas: 15000,
+		cep: '82840290',
+		logradouro: 'Av Da integração',
+		numero: '2284',
+		complemento: 'Casa',
+		bairro: 'Bairro Alto',
+		cidade: 'Curitiba',
+		estado: 'PR',
+	},
 ]

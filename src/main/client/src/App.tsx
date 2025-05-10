@@ -5,6 +5,8 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { AuthProvider } from './contexts/AuthContext'
 import { FlightSearchProvider } from './contexts/FlightSearchContext'
 import { mockFlights } from './mocks/flights'
+import VisualizarFuncionario from './components/Funcionario/VisualizarFuncionario/VisualizarFuncionario'
+import CadastrarVoo from './pages/CadastrarVoo'
 const Header = lazy(() => import('../src/components/Header/Header'))
 const Signup = lazy(() => import('../src/pages/Signup/Signup'))
 const ClientLogin = lazy(() => import('./pages/ClientLogin'))
@@ -14,10 +16,9 @@ const Reservations = lazy(() => import('../src/pages/Reservations'))
 const SearchResults = lazy(() => import('../src/pages/SearchResults'))
 const ComprarMilhas = lazy(() => import('./pages/Milhas/Milhas'))
 const Funcionario = lazy(() => import('../src/pages/Funcionario'))
-const FuncionarioCadastrar = lazy(
-	() => import('../src/components/Funcionario/CadastrarFuncionario/CadastrarFuncionario')
-)
+const FuncionarioCadastrar = lazy(() => import('../src/components/Funcionario/CadastrarFuncionario/CadastrarFuncionario'))
 const EditarFuncionario = lazy(() => import('../src/components/Funcionario/EditarFuncionario/EditarFuncionario'))
+const ConfirmacaoEmbarque = lazy(() => import('../src/pages/ConfirmacaoEmbarque'))
 const queryClient = new QueryClient()
 
 function App() {
@@ -42,10 +43,13 @@ function App() {
 									<Route path="/busca" element={<SearchResults />} />
 									<Route path="/cliente/:clientId" element={<ClientDashboard />} />
 									<Route path="/cliente/:clientId/reservas" element={<Reservations />} />
-									<Route path="/cliente/:clientId/milhas/comprar" element={<ComprarMilhas />} />
-									<Route path="/funcionario" element={<Funcionario />} />
-									<Route path="/funcionario/inserir" element={<FuncionarioCadastrar />} />
+									<Route path="/cliente/:clientId/milhas/comprar" element={<ComprarMilhas/>} />
+									<Route path="/funcionario" element={<Funcionario/>} />
+									<Route path="/funcionario/visualizar" element={<VisualizarFuncionario/>} />
+									<Route path="/funcionario/cadastrar/funcionario" element={<FuncionarioCadastrar/>} />
 									<Route path="/funcionario/editar" element={<EditarFuncionario />} />
+									<Route path="/funcionario/embarque" element={<ConfirmacaoEmbarque />} />
+									<Route path="/funcionario/cadastrar/voo" element={<CadastrarVoo />} />
 								</Routes>
 							</main>
 						</div>
