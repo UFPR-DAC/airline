@@ -7,8 +7,10 @@ import axios from 'axios'
 import { isCepValid, limparMascaraCep } from '../../utils/cep/cep'
 import { useEffect, useRef } from 'react'
 import { estadosBrasil } from '../../utils/uf/uf'
+import { useNavigate } from 'react-router'
 
 export default function Signup() {
+	const navigate = useNavigate()
 	const {
 		register,
 		handleSubmit,
@@ -22,6 +24,7 @@ export default function Signup() {
 	const registerWithMask = useHookFormMask(register)
 	const onSubmit = (data: UserSignup) => {
 		alert(`Usuário ${data.nome} criado!`)
+		navigate('/login')
 	}
 
 	const cepSujo = watch('cep')
