@@ -28,7 +28,7 @@ export default function ClientDashboard() {
 				</div>
 				<div className="px-80">
 					<button className="cursor-pointer text-white bg-green-600 p-4 rounded-full hover:bg-green-500">
-						Usar pontos
+						Adquirir pontos
 					</button>
 				</div>
 			</div>
