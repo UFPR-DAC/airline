@@ -1,3 +1,7 @@
+package com.dac.airline.Client_Service.model;
+
+import java.util.List;
+
 public class Endereco {
     private String cep;
     private String rua;
