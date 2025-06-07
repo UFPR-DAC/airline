@@ -1,6 +1,6 @@
 package com.example.authservice.security;
 
-import com.example.authservice.model.User;
+import com.example.authservice.model.Customer;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.stereotype.Service;
@@ -10,12 +10,12 @@ import java.util.Date;
 @Service
 public class JwtService {
     private final String secret = "chave";
-    private final long expiration = 86400000;
+    private final long expiration = 86400000L;
 
-    public String generateToken(User usuario) {
+    public String generateToken(Customer usuario) {
         return Jwts.builder()
                 .setSubject(usuario.getEmail())
-                .claim("tipo", usuario.getRole().name())
+                .claim("tipo", usuario.getRole() != null ? usuario.getRole().name() : null)
                 .claim("cpf", usuario.getCpf())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + expiration))
@@ -29,5 +29,9 @@ public class JwtService {
                 .parseClaimsJws(token)
                 .getBody()
                 .getSubject();
+    }
+
+    public String getTokenType() {
+        return "Bearer";
     }
 }

@@ -1,7 +1,6 @@
 package com.example.authservice.service;
 
-import com.example.authservice.model.User;
-import com.example.authservice.model.Role;
+import com.example.authservice.model.Customer;
 import com.example.authservice.dto.AuthRequest;
 import com.example.authservice.dto.AuthResponse;
 import com.example.authservice.repository.UserRepository;
@@ -25,16 +24,16 @@ public class AuthService {
         this.userRepository = userRepository;
     }
 
-    public LoginResponse login(LoginRequest request) {
+    public AuthResponse login(AuthRequest request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getLogin(), request.getSenha())
         );
 
-        User user = userRepository.findByLogin(request.getLogin())
+        Customer user = userRepository.findByEmail(request.getLogin())
                 .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado"));
 
         String token = jwtService.generateToken(user);
 
-        return new LoginResponse(token, "Bearer", user.getRole(), user);
+        return new AuthResponse(token, user);
     }
 }

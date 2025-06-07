@@ -1,17 +1,17 @@
 package com.example.authservice.dto;
 
-import com.example.authservice.model.User;
+import com.example.authservice.model.Customer;
 import com.example.authservice.model.Role;
 
 public class AuthResponse {
     private String access_token;
     private String token_type = "Bearer";
     private Role tipo;
-    private User usuario;
+    private Customer usuario;
 
-    public AuthResponse(String token, User usuario) {
+    public AuthResponse(String token, Customer usuario) {
         this.access_token = token;
-        this.token_type = usuario.getRole;
+        this.tipo = usuario.getRole();
         this.usuario = usuario;
     }
 
@@ -22,7 +22,7 @@ public class AuthResponse {
         return tipo;
     }
 
-    public User getUsuario() {
+    public Customer getUsuario() {
         return usuario;
     }
 }

@@ -1,6 +1,9 @@
 package com.example.authservice.model;
 
-@Document(collection = "users")
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+@Document(collection = "customers")
 public class Customer {
     @Id
     private String cpf;
@@ -8,15 +11,13 @@ public class Customer {
     private String nome;
     private String senha;
     private Role role;
-
     private Integer saldoMilhas;
     private Endereco endereco;
-
     private String telefone;
 
-    public User(){}
+    public Customer() {}
 
-    public User(String cpf, String email, String nome, String senha, Role role, Integer saldoMilhas, Endereco endereco, String telefone) {
+    public Customer(String cpf, String email, String nome, String senha, Role role, Integer saldoMilhas, Endereco endereco, String telefone) {
         this.cpf = cpf;
         this.email = email;
         this.nome = nome;
@@ -25,14 +26,6 @@ public class Customer {
         this.saldoMilhas = saldoMilhas;
         this.endereco = endereco;
         this.telefone = telefone;
-    }
-
-    public static User createCliente(String cpf, String email, String nome, String senha, Integer saldoMilhas, Endereco endereco) {
-        return new User(cpf, email, nome, senha, UserRole.CLIENTE, saldoMilhas, endereco, null);
-    }
-
-    public static User createFuncionario(String cpf, String email, String nome, String senha, String telefone) {
-        return new User(cpf, email, nome, senha, UserRole.FUNCIONARIO, null, null, telefone);
     }
 
     public String getCpf() {
@@ -67,15 +60,19 @@ public class Customer {
         this.senha = senha;
     }
 
-    public Role getRole() { this.role = role; }
+    public Role getRole() {
+        return role;
+    }
 
-    public void setRole(Role role) { this.role = role; }
+    public void setRole(Role role) {
+        this.role = role;
+    }
 
-    public int getSaldoMilhas() {
+    public Integer getSaldoMilhas() {
         return saldoMilhas;
     }
 
-    public void setSaldoMilhas(int saldoMilhas) {
+    public void setSaldoMilhas(Integer saldoMilhas) {
         this.saldoMilhas = saldoMilhas;
     }
 

@@ -1,6 +1,10 @@
 volumes:
   postgres_client_data:
     driver: local
+  postgres_funcionario_data:
+    driver: local
+  mongo_auth_data:
+    driver: local
 
 services:
   postgres-client:
@@ -25,3 +29,28 @@ services:
       - "8080:8080"
     depends_on:
       - postgres-client
+  postgres-funcionario:
+    image: postgres:latest
+    container_name: postgres-funcionario
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: funcionario_db
+      SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5434/funcionario_db
+      SPRING_DATASOURCE_USERNAME: funcionario_user
+      SPRING_DATASOURCE_PASSWORD: funcionario_pass
+      # SPRING_RABBITMQ_HOST: rabbitmq
+      # SPRING_RABBITMQ_PORT: 5672
+      # SPRING_RABBITMQ_USERNAME: rabbitmq
+      # SPRING_RABBITMQ_PASSWORD: rabbitmq
+    ports:
+      - "5434:5432"
+    volumes:
+      - postgres_funcionario_data:/var/lib/postgresql/data
+  mongo-authentication:
+    image: mongo:latest
+    container_name: mongo-authentication
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_auth_data:/data/db
