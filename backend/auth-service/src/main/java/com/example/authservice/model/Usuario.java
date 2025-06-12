@@ -1,6 +1,6 @@
 package com.example.authservice.model;
 
-@Document(collection = "users")
+@Document(collection = "usuarios")
 public class Customer {
     @Id
     private String cpf;
