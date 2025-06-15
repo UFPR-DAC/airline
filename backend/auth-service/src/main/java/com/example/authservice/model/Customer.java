@@ -10,19 +10,19 @@ public class Customer {
     private String email;
     private String nome;
     private String senha;
-    private Role role;
+    private TipoUsuario tipoUsuario;
     private Integer saldoMilhas;
     private Endereco endereco;
     private String telefone;
 
     public Customer() {}
 
-    public Customer(String cpf, String email, String nome, String senha, Role role, Integer saldoMilhas, Endereco endereco, String telefone) {
+    public Customer(String cpf, String email, String nome, String senha, TipoUsuario tipoUsuario, Integer saldoMilhas, Endereco endereco, String telefone) {
         this.cpf = cpf;
         this.email = email;
         this.nome = nome;
         this.senha = senha;
-        this.role = role;
+        this.tipoUsuario = tipoUsuario;
         this.saldoMilhas = saldoMilhas;
         this.endereco = endereco;
         this.telefone = telefone;
@@ -60,12 +60,12 @@ public class Customer {
         this.senha = senha;
     }
 
-    public Role getRole() {
-        return role;
+    public TipoUsuario getRole() {
+        return tipoUsuario;
     }
 
-    public void setRole(Role role) {
-        this.role = role;
+    public void setRole(TipoUsuario tipoUsuario) {
+        this.tipoUsuario = tipoUsuario;
     }
 
     public Integer getSaldoMilhas() {

@@ -1,28 +1,29 @@
 package com.example.authservice.dto;
 
 import com.example.authservice.model.Customer;
-import com.example.authservice.model.Role;
+import com.example.authservice.model.TipoUsuario;
 
 public class AuthResponse {
     private String access_token;
     private String token_type = "Bearer";
-    private Role tipo;
-    private Customer usuario;
+    private TipoUsuario tipo;
+    private UsuarioDTO usuario;
 
-    public AuthResponse(String token, Customer usuario) {
+    public AuthResponse(String token, UsuarioDTO usuario) {
         this.access_token = token;
-        this.tipo = usuario.getRole();
+        this.tipo = TipoUsuario.valueOf(usuario.getTipo());
         this.usuario = usuario;
+        this.usuario.setSenha("");
     }
 
     public String getAccess_token() { return access_token; }
     public String getToken_type() { return token_type; }
 
-    public Role getTipo() {
+    public TipoUsuario getTipo() {
         return tipo;
     }
 
-    public Customer getUsuario() {
+    public UsuarioDTO getUsuario() {
         return usuario;
     }
 }

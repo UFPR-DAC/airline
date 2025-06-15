@@ -3,51 +3,31 @@ package com.example.authservice.controller;
 import com.example.authservice.dto.AuthRequest;
 import com.example.authservice.dto.AuthResponse;
 import com.example.authservice.model.Customer;
-import com.example.authservice.repository.UserRepository;
+import com.example.authservice.repository.UsuarioRepository;
 import com.example.authservice.security.JwtService;
 
-import java.beans.Customizer;
-
+import com.example.authservice.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequestMapping
 public class AuthController {
-    @Autowired
-    private UserRepository userRepository;
+    private final AuthService authService;
 
-    @Autowired
-    private JwtService jwtService;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    @PostMapping("/cadastrar")
-    public ResponseEntity<?> register(@RequestBody AuthRequest request) {
-        if (userRepository.existsByEmail(request.getLogin())) {
-            return ResponseEntity.status(400).body("Email já cadastrado.");
-        }
-
-        Customer user = new Customer();
-        user.setEmail(request.getLogin());
-        user.setSenha(passwordEncoder.encode(request.getSenha()));
-        userRepository.save(user);
-
-        String token = jwtService.generateToken(user);
-        return ResponseEntity.ok(new AuthResponse(token, user));
+    public AuthController(AuthService authService) {
+        this.authService = authService;
     }
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody AuthRequest request) {
-        Customer user = userRepository.findByEmail(request.getLogin())
-                .orElse(null);
-        if (user == null || !passwordEncoder.matches(request.getSenha(), user.getSenha())) {
-            return ResponseEntity.status(401).body("Dados inválidos.");
+        try {
+            AuthResponse response = authService.login(request);
+            return ResponseEntity.ok(response);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(401).body("Acesso não autorizado");
         }
-
-        String token = jwtService.generateToken(user);
-        return ResponseEntity.ok(new AuthResponse(token, user));
     }
 }

@@ -1,5 +1,6 @@
 package com.example.authservice.security;
 
+import com.example.authservice.dto.UsuarioDTO;
 import com.example.authservice.model.Customer;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -12,10 +13,10 @@ public class JwtService {
     private final String secret = "chave";
     private final long expiration = 86400000L;
 
-    public String generateToken(Customer usuario) {
+    public String generateToken(UsuarioDTO usuario) {
         return Jwts.builder()
                 .setSubject(usuario.getEmail())
-                .claim("tipo", usuario.getRole() != null ? usuario.getRole().name() : null)
+                .claim("tipo", usuario.getTipo() != null ? usuario.getTipo() : null)
                 .claim("cpf", usuario.getCpf())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + expiration))

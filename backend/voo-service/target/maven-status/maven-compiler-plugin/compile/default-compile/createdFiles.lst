@@ -1,0 +1,8 @@
+com/example/voo_service/VooServiceApplication.class
+com/example/voo_service/model/Aeroporto.class
+com/example/voo_service/repository/VooRepository.class
+com/example/voo_service/model/Estado.class
+com/example/voo_service/controller/VooController.class
+com/example/voo_service/dto/VooDTO.class
+com/example/voo_service/model/Voo.class
+com/example/voo_service/repository/AeroportoRepository.class
