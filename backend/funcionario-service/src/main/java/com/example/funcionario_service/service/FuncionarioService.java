@@ -22,12 +22,15 @@ public class FuncionarioService {
     @Transactional(readOnly = true)
     public List<FuncionarioDTO> buscarTodosFuncionarios() {
         List<Funcionario> funcionarios = funcionarioRepository.findAllByAtivoTrueOrderByNomeAsc();
-        return funcionarios.stream().map(FuncionarioDTO::new).collect(Collectors.toList());
+        return funcionarios.stream()
+                .map(FuncionarioDTO::new)
+                .collect(Collectors.toList());
     }
 
     @Transactional
     public FuncionarioDTO criarFuncionario(FuncionarioRequestDTO requestDTO) {
         Funcionario funcionario = new Funcionario();
+        
         funcionario.setNome(requestDTO.getNome());
         funcionario.setCpf(requestDTO.getCpf());
         funcionario.setEmail(requestDTO.getEmail());
@@ -36,10 +39,8 @@ public class FuncionarioService {
 
         Funcionario novoFuncionario = funcionarioRepository.save(funcionario);
 
-        // TODO: Lógica SAGA - Enviar mensagem para o RabbitMQ
-        // Aqui você adicionaria a chamada para um serviço que publica uma mensagem
+        // TODO: Lógica SAGA - Enviar mensagem de inserir para o RabbitMQ
         // para o MS de Autenticação criar o usuário com a senha recebida.
-        // Ex: rabbitMQProducer.sendNewUserMessage(novoFuncionario.getCodigo(), requestDTO.getEmail(), requestDTO.getSenha());
 
         return new FuncionarioDTO(novoFuncionario);
     }
@@ -50,37 +51,35 @@ public class FuncionarioService {
         if (funcionarioOpt.isPresent()) {
             Funcionario funcionario = funcionarioOpt.get();
             
-            // R18: Permite a alteração de dados, menos o CPF 
             funcionario.setNome(requestDTO.getNome());
             funcionario.setEmail(requestDTO.getEmail());
             funcionario.setTelefone(requestDTO.getTelefone());
 
             Funcionario funcionarioAtualizado = funcionarioRepository.save(funcionario);
 
-            // TODO: Lógica SAGA (se necessário) - Enviar mensagem de atualização
+            // TODO: Lógica SAGA - Enviar mensagem de atualização para o RabbitMQ
             // para o MS de Autenticação, caso o e-mail (login) mude.
 
             return new FuncionarioDTO(funcionarioAtualizado);
         }
-        return null; // ou lançar uma exceção de "Não Encontrado"
+        return null;
     }
 
     @Transactional
-    public boolean removerFuncionario(Long id) {
+    public FuncionarioDTO removerFuncionario(Long id) {
         Optional<Funcionario> funcionarioOpt = funcionarioRepository.findById(id);
         if (funcionarioOpt.isPresent()) {
             Funcionario funcionario = funcionarioOpt.get();
             
-            // R19: Ao ser removido, seus dados não devem ser apagados, somente inativados 
             funcionario.setAtivo(false);
-            funcionarioRepository.save(funcionario);
 
-            // TODO: Lógica SAGA - Enviar mensagem para o RabbitMQ
+            Funcionario funcionarioRemovido = funcionarioRepository.save(funcionario);
+
+            // TODO: Lógica SAGA - Enviar mensagem de remover para o RabbitMQ
             // para o MS de Autenticação inativar ou remover o login do usuário.
-            // Ex: rabbitMQProducer.sendDeleteUserMessage(funcionario.getCodigo());
             
-            return true;
+            return new FuncionarioDTO(funcionarioRemovido);
         }
-        return false;
+        return null;
     }
 }

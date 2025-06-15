@@ -1,14 +1,12 @@
-package com.example.client_service.model;
+package com.example.client_service.dto;
 
-import com.example.client_service.dto.EnderecoDTO;
-import jakarta.persistence.Embeddable;
+import com.example.client_service.model.Endereco;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
-@Embeddable
 @NoArgsConstructor
 @AllArgsConstructor
-public class Endereco {
+public class EnderecoDTO {
     private String cep;
     private String uf;
     private String cidade;
@@ -16,15 +14,15 @@ public class Endereco {
     private String rua;
     private String numero;
     private String complemento;
-    
-    public Endereco(EnderecoDTO dto) {
-        this.cep = dto.getCep();
-        this.uf = dto.getUf();
-        this.cidade = dto.getCidade();
-        this.bairro = dto.getBairro();
-        this.rua = dto.getRua();
-        this.numero = dto.getNumero();
-        this.complemento = dto.getComplemento();
+
+    public EnderecoDTO(Endereco endereco) {
+        this.cep = endereco.getCep();
+        this.uf = endereco.getUf();
+        this.cidade = endereco.getCidade();
+        this.bairro = endereco.getBairro();
+        this.rua = endereco.getRua();
+        this.numero = endereco.getNumero();
+        this.complemento = endereco.getComplemento();
     }
 
     public String getCep() {

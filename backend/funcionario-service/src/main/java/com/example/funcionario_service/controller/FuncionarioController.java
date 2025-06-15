@@ -20,22 +20,24 @@ public class FuncionarioController {
     @Autowired
     private FuncionarioService funcionarioService;
 
-    @Autowired
-    private FuncionarioRepository funcionarioRepository;
+    // @GetMapping
+    // public List<Funcionario> listarFuncionario() {
+    //     return funcionarioRepository.findAll();
+    // }
 
     @GetMapping
-    public List<Funcionario> listar() {
-        return funcionarioRepository.findAll();
+    public ResponseEntity<List<FuncionarioDTO>> listarFuncionarios() {
+        List<FuncionarioDTO> funcionarios = funcionarioService.buscarTodosFuncionarios();
+        return ResponseEntity.ok(funcionarios);
     }
 
     @PostMapping
     public ResponseEntity<FuncionarioDTO> criarFuncionario(@RequestBody FuncionarioRequestDTO requestDTO) {
-        try {
-            FuncionarioDTO novoFuncionario = funcionarioService.criarFuncionario(requestDTO);
+        FuncionarioDTO novoFuncionario = funcionarioService.criarFuncionario(requestDTO);
+        if(novoFuncionario != null) {
             return new ResponseEntity<>(novoFuncionario, HttpStatus.CREATED);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
+        return ResponseEntity.notFound().build();
     }
 
     @PutMapping("/{codigoFuncionario}")
@@ -48,10 +50,10 @@ public class FuncionarioController {
     }
 
     @DeleteMapping("/{codigoFuncionario}")
-    public ResponseEntity<Void> removerFuncionario(@PathVariable Long codigoFuncionario) {
-        boolean removido = funcionarioService.removerFuncionario(codigoFuncionario);
-        if (removido) {
-            return ResponseEntity.ok().build();
+    public ResponseEntity<FuncionarioDTO> removerFuncionario(@PathVariable Long codigoFuncionario) {
+        FuncionarioDTO funcionarioRemovido = funcionarioService.removerFuncionario(codigoFuncionario);
+        if (funcionarioRemovido != null) {
+            return ResponseEntity.ok(funcionarioRemovido);
         }
         return ResponseEntity.notFound().build();
     }

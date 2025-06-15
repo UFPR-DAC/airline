@@ -1,8 +1,11 @@
 package com.example.funcionario_service.dto;
 
+<<<<<<< HEAD
 import lombok.Getter;
 import lombok.Setter;
 
+=======
+>>>>>>> feature/cliente_service
 public class FuncionarioRequestDTO {
     private String cpf;
     private String email;

@@ -1,34 +1,30 @@
-package com.example.client_service.model;
+package com.example.client_service.dto;
 
-import jakarta.persistence.*;
+import com.example.client_service.model.Cliente;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
-
 import java.math.BigDecimal;
 
-@Entity
-@Table(name = "tb_cliente")
 @NoArgsConstructor
 @AllArgsConstructor
-public class Cliente {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class ClienteDTO {
     private Long codigo;
-
-    @Column(unique = true, nullable = false)
     private String cpf;
-
-    @Column(unique = true, nullable = false)
     private String email;
-
-    @Column(nullable = false)
     private String nome;
+    private BigDecimal saldo_milhas;
+    private EnderecoDTO endereco;
 
-    @Column(nullable = false)
-    private BigDecimal saldoMilhas;
-
-    @Embedded
-    private Endereco endereco;
+    public ClienteDTO(Cliente cliente) {
+        this.codigo = cliente.getCodigo();
+        this.cpf = cliente.getCpf();
+        this.email = cliente.getEmail();
+        this.nome = cliente.getNome();
+        this.saldo_milhas = cliente.getSaldoMilhas();
+        if (cliente.getEndereco() != null) {
+            this.endereco = new EnderecoDTO(cliente.getEndereco());
+        }
+    }
 
     public Long getCodigo() {
         return codigo;
@@ -62,19 +58,21 @@ public class Cliente {
         this.nome = nome;
     }
 
-    public BigDecimal getSaldoMilhas() {
-        return saldoMilhas;
+    public BigDecimal getSaldo_milhas() {
+        return saldo_milhas;
     }
 
-    public void setSaldoMilhas(BigDecimal saldoMilhas) {
-        this.saldoMilhas = saldoMilhas;
+    public void setSaldo_milhas(BigDecimal saldo_milhas) {
+        this.saldo_milhas = saldo_milhas;
     }
 
-    public Endereco getEndereco() {
+    public EnderecoDTO getEndereco() {
         return endereco;
     }
 
-    public void setEndereco(Endereco endereco) {
+    public void setEndereco(EnderecoDTO endereco) {
         this.endereco = endereco;
     }
+
+    
 }

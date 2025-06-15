@@ -5,6 +5,8 @@ volumes:
     driver: local
   mongo_auth_data:
     driver: local
+  postgres_reserva_data:
+    driver: local
 
 services:
   postgres-client:
@@ -20,11 +22,14 @@ services:
       - postgres_client_data:/var/lib/postgresql/data
   client-service:
     build:
-      context: ./Client-Service
+      context: ./backend/client-service
       dockerfile: Dockerfile
     container_name: client-service
     environment:
-      - DATABASE_URL=postgresql://postgres:postgres@postgres-client:5432/client_db
+      #- DATABASE_URL=postgresql://postgres:postgres@postgres-client:5432/client_db
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-client:5432/client_db
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
     ports:
       - "8080:8080"
     depends_on:
