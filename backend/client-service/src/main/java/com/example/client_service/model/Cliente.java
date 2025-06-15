@@ -2,16 +2,12 @@ package com.example.client_service.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.math.BigDecimal;
 
 @Entity
 @Table(name = "tb_cliente")
-@Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Cliente {
@@ -33,4 +29,52 @@ public class Cliente {
 
     @Embedded
     private Endereco endereco;
+
+    public Long getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(Long codigo) {
+        this.codigo = codigo;
+    }
+
+    public String getCpf() {
+        return cpf;
+    }
+
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public BigDecimal getSaldoMilhas() {
+        return saldoMilhas;
+    }
+
+    public void setSaldoMilhas(BigDecimal saldoMilhas) {
+        this.saldoMilhas = saldoMilhas;
+    }
+
+    public Endereco getEndereco() {
+        return endereco;
+    }
+
+    public void setEndereco(Endereco endereco) {
+        this.endereco = endereco;
+    }
 }

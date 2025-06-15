@@ -1,6 +1,6 @@
 package com.example.client_service.enums;
 
-public enum TipoTransacao {
+public enum EnumTipoTransacao {
     ENTRADA,
     SAIDA
 }

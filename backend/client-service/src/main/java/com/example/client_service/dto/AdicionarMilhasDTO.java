@@ -1,11 +1,16 @@
 package com.example.client_service.dto;
 
-import lombok.Getter;
-import lombok.Setter;
 import java.math.BigDecimal;
 
-@Getter
-@Setter
+
 public class AdicionarMilhasDTO {
     private BigDecimal quantidade;
+
+    public BigDecimal getQuantidade() {
+        return quantidade;
+    }
+
+    public void setQuantidade(BigDecimal quantidade) {
+        this.quantidade = quantidade;
+    }
 }
