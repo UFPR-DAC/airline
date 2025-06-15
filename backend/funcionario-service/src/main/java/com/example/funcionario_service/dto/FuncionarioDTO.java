@@ -2,10 +2,10 @@ package com.example.funcionario_service.dto;
 
 import com.example.funcionario_service.model.Funcionario;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
 
 @Getter
 @Setter

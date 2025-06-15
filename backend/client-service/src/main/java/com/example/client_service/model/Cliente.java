@@ -1,19 +1,36 @@
 package com.example.client_service.model;
 
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.math.BigDecimal;
+
 @Entity
-@Data
+@Table(name = "tb_cliente")
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Cliente {
     @Id
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long codigo;
+
+    @Column(unique = true, nullable = false)
     private String cpf;
-    private String nome;
+
+    @Column(unique = true, nullable = false)
     private String email;
-    @Column(name = "saldo_milhas")
-    private int saldoMilhas;
-    @OneToOne(cascade = CascadeType.ALL
-    @JoinColumn(name = "endereco_id", referencedColumnName = "id")
+
+    @Column(nullable = false)
+    private String nome;
+
+    @Column(nullable = false)
+    private BigDecimal saldoMilhas;
+
+    @Embedded
     private Endereco endereco;
-    private String telefone;
 }

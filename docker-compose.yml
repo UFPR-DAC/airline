@@ -5,6 +5,8 @@ volumes:
     driver: local
   mongo_auth_data:
     driver: local
+  postgres_reserva_data:
+    driver: local
 
 services:
   postgres-client:
@@ -20,11 +22,14 @@ services:
       - postgres_client_data:/var/lib/postgresql/data
   client-service:
     build:
-      context: ./Client-Service
+      context: ./backend/client-service
       dockerfile: Dockerfile
     container_name: client-service
     environment:
-      - DATABASE_URL=postgresql://postgres:postgres@postgres-client:5432/client_db
+      #- DATABASE_URL=postgresql://postgres:postgres@postgres-client:5432/client_db
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-client:5432/client_db
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
     ports:
       - "8080:8080"
     depends_on:
@@ -54,3 +59,46 @@ services:
       - "27017:27017"
     volumes:
       - mongo_auth_data:/data/db
+  postgres-reserva:
+    image: postgres:latest
+    container_name: postgres-reserva
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: reserva_db
+    ports:
+      - "5435:5432" # Expõe o banco de dados da reserva na porta 5435 do host
+    volumes:
+      - postgres_reserva_data:/var/lib/postgresql/data
+  reserva-service:
+    build:
+      context: ./backend/reserva-service # Altere para o caminho correto do seu serviço
+      dockerfile: Dockerfile
+    container_name: reserva-service
+    environment:
+      # Conecta ao banco de dados 'postgres-reserva'
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-reserva:5432/reserva_db
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+      - SPRING_RABBITMQ_HOST=rabbitmq
+      - SPRING_RABBITMQ_PORT=5672
+      - SPRING_RABBITMQ_USERNAME=rabbitmq
+      - SPRING_RABBITMQ_PASSWORD=rabbitmq
+    ports:
+      - "8085:8080" # Expõe a aplicação da reserva na porta 8083
+    depends_on:
+      - postgres-reserva # Garante que o banco de dados inicie antes do serviço
+      - rabbitmq # Garante que o RabbitMQ inicie antes do serviço
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      # Porta 5672: para os microsserviços se comunicarem com o RabbitMQ
+      - "5672:5672"
+      # Porta 15672: para a interface web de gerenciamento
+      - "15672:15672"
+    environment:
+      # Credenciais padrão, podem ser alteradas se necessário
+      - RABBITMQ_DEFAULT_USER=rabbitmq
+      - RABBITMQ_DEFAULT_PASS=rabbitmq
+
