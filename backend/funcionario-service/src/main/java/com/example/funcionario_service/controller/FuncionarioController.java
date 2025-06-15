@@ -2,6 +2,8 @@ package com.example.funcionario_service.controller;
 
 import com.example.funcionario_service.dto.FuncionarioDTO;
 import com.example.funcionario_service.dto.FuncionarioRequestDTO;
+import com.example.funcionario_service.model.Funcionario;
+import com.example.funcionario_service.repository.FuncionarioRepository;
 import com.example.funcionario_service.service.FuncionarioService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,13 +20,12 @@ public class FuncionarioController {
     @Autowired
     private FuncionarioService funcionarioService;
 
+    @Autowired
+    private FuncionarioRepository funcionarioRepository;
+
     @GetMapping
-    public ResponseEntity<List<FuncionarioDTO>> buscarTodosFuncionarios() {
-        List<FuncionarioDTO> funcionarios = funcionarioService.buscarTodosFuncionarios();
-        if (funcionarios.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.ok(funcionarios);
+    public List<Funcionario> listar() {
+        return funcionarioRepository.findAll();
     }
 
     @PostMapping
