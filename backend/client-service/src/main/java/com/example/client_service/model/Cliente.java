@@ -8,8 +8,6 @@ import java.math.BigDecimal;
 
 @Entity
 @Table(name = "tb_cliente")
-@NoArgsConstructor
-@AllArgsConstructor
 public class Cliente {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,8 +25,9 @@ public class Cliente {
     @Column(nullable = false)
     private BigDecimal saldoMilhas;
 
-    @Embedded
     private Endereco endereco;
+
+    public Cliente() {}
 
     public Long getCodigo() {
         return codigo;

@@ -7,15 +7,44 @@ volumes:
     driver: local
   postgres_reserva_data:
     driver: local
+  rabbitmq_data:
+    driver: local
 
 services:
+  auth-service:
+    build:
+      context: ./backend/auth-service
+      dockerfile: Dockerfile
+    container_name: auth-service
+    ports:
+      - "8085:8084"
+    environment:
+      - SPRING_DATA_MONGODB_URI=mongodb://mongo:27017/auth_db
+      - JWT_SECRET=tadsUFPR2025DesenvolvimentoAplicacoesCorporativasGrupo6AndersonRafaelViviane
+      - JWT_EXPIRATION=86400000
+      - SPRING_RABBITMQ_HOST=rabbitmq
+    depends_on:
+      - mongo
+      - rabbitmq
+  mongo:
+    image: mongo:latest
+    container_name: mongo
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_auth_data:/data/db
   postgres-client:
     image: postgres:latest
     container_name: postgres-client
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: client_db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=client_db
+      - SPRING_RABBITMQ_HOST=rabbitmq
+      - SPRING_RABBITMQ_PORT=5672
+      - SPRING_RABBITMQ_USERNAME=rabbitmq
+      - SPRING_RABBITMQ_PASSWORD=rabbitmq
     ports:
       - "5433:5432"
     volumes:
@@ -38,24 +67,39 @@ services:
     image: postgres:latest
     container_name: postgres-funcionario
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: funcionario_db
-      SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5434/funcionario_db
-      SPRING_DATASOURCE_USERNAME: funcionario_user
-      SPRING_DATASOURCE_PASSWORD: funcionario_pass
-      # SPRING_RABBITMQ_HOST: rabbitmq
-      # SPRING_RABBITMQ_PORT: 5672
-      # SPRING_RABBITMQ_USERNAME: rabbitmq
-      # SPRING_RABBITMQ_PASSWORD: rabbitmq
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=funcionario_db
+      - SPRING_RABBITMQ_HOST=rabbitmq
+      - SPRING_RABBITMQ_PORT=5672
+      - SPRING_RABBITMQ_USERNAME=rabbitmq
+      - SPRING_RABBITMQ_PASSWORD=rabbitmq
     ports:
       - "5434:5432"
     volumes:
       - postgres_funcionario_data:/var/lib/postgresql/data
-  mongo-authentication:
-    image: mongo:latest
-    container_name: mongo-authentication
+  funcionario-service:
+    build:
+      context: ./backend/funcionario-service
+      dockerfile: Dockerfile
+    container_name: funcionario-service
+    environment:
+      #- DATABASE_URL=postgresql://postgres:postgres@postgres-client:5432/client_db
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-funcionario:5432/funcionario_db
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
     ports:
-      - "27017:27017"
+      - "8081:8084"
+    depends_on:
+      - postgres-funcionario
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672" #painel adm
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
     volumes:
-      - mongo_auth_data:/data/db
+      - rabbitmq_data:/var/lib/rabbitmq

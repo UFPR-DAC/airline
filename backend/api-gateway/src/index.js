@@ -1,21 +1,20 @@
-const express = require('express');
-const cors = require('cors');
-const morgan = require('morgan');
-const routes = require('./routes');
+import express from 'express';
 
-// Inicializa a aplicação Express
+import cors from 'cors';
+import router from "./routes/employee.route.js";
+import authRoute from "./routes/auth.route.js";
+const PORT = process.env.PORT || 3000;
 const app = express();
 
-// Middlewares Globais
+
 app.use(cors()); // Habilita o Cross-Origin Resource Sharing
 app.use(express.json()); // Permite que o express entenda requisições com corpo em JSON
-app.use(morgan('dev')); // Middleware para logar as requisições HTTP no console
 
 // Define a porta do servidor
-const PORT = process.env.PORT || 8080;
 
 // Carrega as rotas do gateway
-app.use(routes);
+app.use(router);
+app.use(authRoute);
 
 // Inicia o servidor
 app.listen(PORT, () => {

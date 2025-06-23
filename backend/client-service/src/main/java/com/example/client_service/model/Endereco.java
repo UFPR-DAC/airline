@@ -6,16 +6,16 @@ import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
 @Embeddable
-@NoArgsConstructor
-@AllArgsConstructor
 public class Endereco {
     private String cep;
-    private String uf;
-    private String cidade;
-    private String bairro;
     private String rua;
     private String numero;
     private String complemento;
+    private String bairro;
+    private String cidade;
+    private String uf;
+
+    public Endereco () {}
     
     public Endereco(EnderecoDTO dto) {
         this.cep = dto.getCep();
@@ -25,6 +25,9 @@ public class Endereco {
         this.rua = dto.getRua();
         this.numero = dto.getNumero();
         this.complemento = dto.getComplemento();
+    }
+
+    public Endereco(String cep, String rua, String numero, String complemento, String bairro, String cidade, String uf) {
     }
 
     public String getCep() {

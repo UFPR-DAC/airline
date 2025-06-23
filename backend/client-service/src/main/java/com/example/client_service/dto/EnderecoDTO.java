@@ -4,7 +4,6 @@ import com.example.client_service.model.Endereco;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
-@NoArgsConstructor
 @AllArgsConstructor
 public class EnderecoDTO {
     private String cep;
@@ -14,6 +13,8 @@ public class EnderecoDTO {
     private String rua;
     private String numero;
     private String complemento;
+
+    public EnderecoDTO() {}
 
     public EnderecoDTO(Endereco endereco) {
         this.cep = endereco.getCep();

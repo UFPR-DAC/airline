@@ -3,37 +3,20 @@ package com.example.authservice.model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection = "customers")
-public class Customer {
+@Document(collection = "usuarios")
+public class Usuario {
     @Id
-    private String cpf;
+    private String codigo;
     private String email;
-    private String nome;
     private String senha;
-    private Role role;
-    private Integer saldoMilhas;
-    private Endereco endereco;
-    private String telefone;
+    private String tipo;
 
-    public Customer() {}
-
-    public Customer(String cpf, String email, String nome, String senha, Role role, Integer saldoMilhas, Endereco endereco, String telefone) {
-        this.cpf = cpf;
-        this.email = email;
-        this.nome = nome;
-        this.senha = senha;
-        this.role = role;
-        this.saldoMilhas = saldoMilhas;
-        this.endereco = endereco;
-        this.telefone = telefone;
+    public String getCodigo() {
+        return codigo;
     }
 
-    public String getCpf() {
-        return cpf;
-    }
-
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
+    public void setCodigo(String codigo) {
+        this.codigo = this.codigo;
     }
 
     public String getEmail() {
@@ -44,14 +27,6 @@ public class Customer {
         this.email = email;
     }
 
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
     public String getSenha() {
         return senha;
     }
@@ -60,35 +35,11 @@ public class Customer {
         this.senha = senha;
     }
 
-    public Role getRole() {
-        return role;
+    public String getTipo() {
+        return tipo;
     }
 
-    public void setRole(Role role) {
-        this.role = role;
-    }
-
-    public Integer getSaldoMilhas() {
-        return saldoMilhas;
-    }
-
-    public void setSaldoMilhas(Integer saldoMilhas) {
-        this.saldoMilhas = saldoMilhas;
-    }
-
-    public Endereco getEndereco() {
-        return endereco;
-    }
-
-    public void setEndereco(Endereco endereco) {
-        this.endereco = endereco;
-    }
-
-    public String getTelefone() {
-        return telefone;
-    }
-
-    public void setTelefone(String telefone) {
-        this.telefone = telefone;
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
     }
 }

@@ -1,6 +1,6 @@
-const { Router } = require('express');
-const { createProxyMiddleware } = require('http-proxy-middleware');
-const autenticarEAutorizar = require('./middleware/authMiddleware');
+import {Router} from "express";
+import { createProxyMiddleware } from 'http-proxy-middleware';
+import autenticarEAutorizar from '../middleware/authMiddleware.js';
 
 const router = Router();
 
@@ -8,8 +8,8 @@ const router = Router();
 // Em um ambiente com Docker, seria o nome do serviço (ex: 'http://ms-funcionario:8082')
 const FUNCIONARIO_SERVICE_URL = 'http://localhost:8084';
 
-// Permissão necessária para acessar as rotas de funcionários 
-const PERMISSAO_FUNCIONARIO = ['FUNCIONARIO']; 
+// Permissão necessária para acessar as rotas de funcionários
+const PERMISSAO_FUNCIONARIO = ['FUNCIONARIO'];
 
 // Configuração do Proxy para o Microsserviço de Funcionários
 const funcionarioProxy = createProxyMiddleware({
@@ -30,8 +30,8 @@ router.use('/funcionarios', autenticarEAutorizar(PERMISSAO_FUNCIONARIO), funcion
 /*
 const CLIENTE_SERVICE_URL = 'http://localhost:8081';
 const clienteProxy = createProxyMiddleware({ target: CLIENTE_SERVICE_URL, changeOrigin: true });
-router.post('/clientes', clienteProxy); // Rota pública de autocadastro 
+router.post('/clientes', clienteProxy); // Rota pública de autocadastro
 */
 
 
-module.exports = router;
+export default router;

@@ -1,12 +1,14 @@
 package com.example.client_service.model;
 
-import com.example.client_service.enums.EnumTipoTransacao;
+import com.example.client_service.enums.TipoTransacao;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.time.OffsetDateTime;
 
 @Entity
 @Table(name = "tb_transacao_milha")
@@ -15,35 +17,38 @@ import java.time.Instant;
 public class TransacaoMilha {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long codigo;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cliente_codigo", nullable = false)
     private Cliente cliente;
 
     @Column(nullable = false)
-    private Instant data;
+    private OffsetDateTime data;
 
+    @JsonProperty("valor_reais")
     private BigDecimal valorReais;
 
     @Column(nullable = false)
+    @JsonProperty("quantidade_milhas")
     private BigDecimal quantidadeMilhas;
 
     @Column(nullable = false)
     private String descricao;
 
+    @JsonProperty("codigo_reserva")
     private String codigoReserva;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private EnumTipoTransacao tipo;
+    private TipoTransacao tipo;
 
-    public Long getId() {
-        return id;
+    public Long getCodigo() {
+        return codigo;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setCodigo(Long codigo) {
+        this.codigo = codigo;
     }
 
     public Cliente getCliente() {
@@ -54,11 +59,12 @@ public class TransacaoMilha {
         this.cliente = cliente;
     }
 
-    public Instant getData() {
+
+    public OffsetDateTime getData() {
         return data;
     }
 
-    public void setData(Instant data) {
+    public void setData(OffsetDateTime data) {
         this.data = data;
     }
 
@@ -94,11 +100,11 @@ public class TransacaoMilha {
         this.codigoReserva = codigoReserva;
     }
 
-    public EnumTipoTransacao getTipo() {
+    public TipoTransacao getTipo() {
         return tipo;
     }
 
-    public void setTipo(EnumTipoTransacao tipo) {
+    public void setTipo(TipoTransacao tipo) {
         this.tipo = tipo;
     }
 }

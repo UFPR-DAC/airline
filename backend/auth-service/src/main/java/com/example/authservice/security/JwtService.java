@@ -1,31 +1,45 @@
 package com.example.authservice.security;
 
-import com.example.authservice.model.Customer;
-import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.*;
+import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.security.Key;
 import java.util.Date;
 
 @Service
 public class JwtService {
-    private final String secret = "chave";
-    private final long expiration = 86400000L;
+    private final Key key;
+    private final long expiration;
 
-    public String generateToken(Customer usuario) {
+    public JwtService(
+            @Value("${jwt.secret}") String secret,
+            @Value("${jwt.expiration}") long expiration) {
+        System.out.println("jwt.secret: " + secret);
+        System.out.println("jwt.expiration: " + expiration);
+        if (secret == null || secret.trim().isEmpty() || secret.length() < 10) {
+            throw new IllegalArgumentException("Secret não pode ser nulo, vazio ou menor que 32 caracteres");
+        }
+        this.key = Keys.hmacShaKeyFor(secret.getBytes());
+        this.expiration = expiration;
+    }
+
+    public String generateToken(String email, String tipo) {
         return Jwts.builder()
-                .setSubject(usuario.getEmail())
-                .claim("tipo", usuario.getRole() != null ? usuario.getRole().name() : null)
-                .claim("cpf", usuario.getCpf())
+                .setSubject(email)
+                .claim("tipo", tipo)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + expiration))
-                .signWith(SignatureAlgorithm.HS512, secret)
+                .signWith(key, SignatureAlgorithm.HS512)
                 .compact();
     }
 
     public String extractEmail(String token) {
-        return Jwts.parser()
-                .setSigningKey(secret)
+        return Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
                 .parseClaimsJws(token)
                 .getBody()
                 .getSubject();

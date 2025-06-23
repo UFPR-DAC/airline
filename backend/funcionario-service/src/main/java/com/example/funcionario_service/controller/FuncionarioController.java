@@ -20,10 +20,10 @@ public class FuncionarioController {
     @Autowired
     private FuncionarioService funcionarioService;
 
-    // @GetMapping
-    // public List<Funcionario> listarFuncionario() {
-    //     return funcionarioRepository.findAll();
-    // }
+//     @GetMapping
+//     public List<Funcionario> listarFuncionario() {
+//         return funcionarioRepository.findAll();
+//     }
 
     @GetMapping
     public ResponseEntity<List<FuncionarioDTO>> listarFuncionarios() {
