@@ -16,18 +16,15 @@ public class Endereco {
     private String uf;
 
     public Endereco () {}
-    
-    public Endereco(EnderecoDTO dto) {
-        this.cep = dto.getCep();
-        this.uf = dto.getUf();
-        this.cidade = dto.getCidade();
-        this.bairro = dto.getBairro();
-        this.rua = dto.getRua();
-        this.numero = dto.getNumero();
-        this.complemento = dto.getComplemento();
-    }
 
     public Endereco(String cep, String rua, String numero, String complemento, String bairro, String cidade, String uf) {
+        this.cep = cep;
+        this.rua = rua;
+        this.numero = numero;
+        this.complemento = complemento;
+        this.bairro = bairro;
+        this.cidade = cidade;
+        this.uf = uf;
     }
 
     public String getCep() {

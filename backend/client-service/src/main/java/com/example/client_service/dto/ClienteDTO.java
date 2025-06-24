@@ -6,7 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import java.math.BigDecimal;
 
-@AllArgsConstructor
 public class ClienteDTO {
     private String cpf;
     private String email;

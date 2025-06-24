@@ -31,7 +31,7 @@ public class TransacaoMilha {
 
     @Column(nullable = false)
     @JsonProperty("quantidade_milhas")
-    private BigDecimal quantidadeMilhas;
+    private Integer quantidadeMilhas;
 
     @Column(nullable = false)
     private String descricao;
@@ -76,11 +76,11 @@ public class TransacaoMilha {
         this.valorReais = valorReais;
     }
 
-    public BigDecimal getQuantidadeMilhas() {
+    public Integer getQuantidadeMilhas() {
         return quantidadeMilhas;
     }
 
-    public void setQuantidadeMilhas(BigDecimal quantidadeMilhas) {
+    public void setQuantidadeMilhas(Integer quantidadeMilhas) {
         this.quantidadeMilhas = quantidadeMilhas;
     }
 

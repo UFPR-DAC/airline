@@ -1,7 +1,7 @@
 import express from 'express';
 
 import cors from 'cors';
-import router from "./routes/employee.route.js";
+import router from "./routes/funcionario.route.js";
 import authRoute from "./routes/auth.route.js";
 const PORT = process.env.PORT || 3000;
 const app = express();
@@ -18,5 +18,5 @@ app.use(authRoute);
 
 // Inicia o servidor
 app.listen(PORT, () => {
-    console.log(`API Gateway em execução na porta ${PORT}`);
+    console.log(`API gateway rodando na porta ${PORT}`);
 });

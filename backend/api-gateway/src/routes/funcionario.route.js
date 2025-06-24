@@ -1,4 +1,4 @@
-import {Router} from "express";
+import { Router } from "express";
 import { createProxyMiddleware } from 'http-proxy-middleware';
 import autenticarEAutorizar from '../middleware/authMiddleware.js';
 

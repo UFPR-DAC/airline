@@ -4,13 +4,13 @@ import java.math.BigDecimal;
 
 
 public class AdicionarMilhasDTO {
-    private BigDecimal quantidade;
+    private Integer quantidade;
 
-    public BigDecimal getQuantidade() {
+    public Integer getQuantidade() {
         return quantidade;
     }
 
-    public void setQuantidade(BigDecimal quantidade) {
+    public void setQuantidade(Integer quantidade) {
         this.quantidade = quantidade;
     }
 }

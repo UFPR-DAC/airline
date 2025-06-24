@@ -9,7 +9,7 @@ router.post('/login', async (req, res) => {
         const authResponse = await axios.post(`${SERVICE_CONFIG.AUTH.url}/login`, req.body);
         console.log(authResponse)
         const { token, tipo } = authResponse.data;
-        const {userId} = authResponse.data?.usuario;
+        const { userId } = authResponse.data?.usuario;
 
         let userResponse;
 
@@ -32,10 +32,9 @@ router.post('/login', async (req, res) => {
         });
 
     } catch (e) {
-        console.error(e)
-        console.error('Erro no login:', e.response?.data || e.message);
+        console.error('Erro no login. ', e.response?.data ?? e);
         return res.status(e.response?.status || 500).json(
-            e.response?.data || { message: 'Erro interno durante o login.' }
+            e.response?.data || { message: 'Erro interno ao fazer login.' }
         );
     }
 });

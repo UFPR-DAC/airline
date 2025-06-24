@@ -10,7 +10,7 @@ import java.time.OffsetDateTime;
 public class TransacaoDTO {
     private OffsetDateTime data;
     private BigDecimal valorReais;
-    private BigDecimal quantidadeMilhas;
+    private Integer quantidadeMilhas;
     private String descricao;
     private String codigoReserva;
     private String tipo;
@@ -31,11 +31,11 @@ public class TransacaoDTO {
         this.valorReais = valorReais;
     }
 
-    public BigDecimal getQuantidadeMilhas() {
+    public Integer getQuantidadeMilhas() {
         return quantidadeMilhas;
     }
 
-    public void setQuantidadeMilhas(BigDecimal quantidadeMilhas) {
+    public void setQuantidadeMilhas(Integer quantidadeMilhas) {
         this.quantidadeMilhas = quantidadeMilhas;
     }
 

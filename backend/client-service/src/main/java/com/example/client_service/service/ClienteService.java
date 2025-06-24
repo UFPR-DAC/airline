@@ -30,13 +30,16 @@ public class ClienteService {
 
     @Transactional
     public ClienteDTO criarCliente(ClienteDTO dto) {
+        System.out.println("Criando um cliente");
+        System.out.println("endereco dto: " + dto.getEndereco());
+        System.out.println("cep dto: " + dto.getEndereco().getCep());
 
         Cliente cliente = new Cliente();
         cliente.setCpf(dto.getCpf());
         cliente.setEmail(dto.getEmail());
         cliente.setNome(dto.getNome());
-        cliente.setSaldoMilhas(BigDecimal.ZERO);
-        cliente.setEndereco(new Endereco(
+        cliente.setSaldoMilhas(0);
+        Endereco endereco = new Endereco(
                 dto.getEndereco().getCep(),
                 dto.getEndereco().getRua(),
                 dto.getEndereco().getNumero(),
@@ -44,7 +47,10 @@ public class ClienteService {
                 dto.getEndereco().getBairro(),
                 dto.getEndereco().getCidade(),
                 dto.getEndereco().getUf()
-        ));
+        );
+        System.out.println("endereco criado com cep: " + endereco.getCep());
+        cliente.setEndereco(endereco);
+        System.out.println("cliente criado com endereço cep " + cliente.getEndereco().getCep());
         Cliente novoCliente = clienteRepository.save(cliente);
 
         return new ClienteDTO(novoCliente);
@@ -60,15 +66,17 @@ public class ClienteService {
     public Cliente adicionarMilhas(Long codigoCliente, AdicionarMilhasDTO dto) {
         Cliente cliente = clienteRepository.findById(codigoCliente).orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
         
-        BigDecimal quantidadeAtualMilhas = cliente.getSaldoMilhas() == null ? BigDecimal.ZERO : cliente.getSaldoMilhas();
-        BigDecimal milhasParaAdicionar = dto.getQuantidade() == null ? BigDecimal.ZERO : dto.getQuantidade();
+        int quantidadeAtualMilhas = cliente.getSaldoMilhas() != null ? cliente.getSaldoMilhas() : 0;
+        int milhasParaAdicionar = dto.getQuantidade() != null ? dto.getQuantidade() : 0;
 
         SecureRandom random = new SecureRandom();
         //1 milha vai custar entre 2 e 3 centavos, então o fator de conversão deve ser entre 33 e 50
-        BigDecimal fatorConversao = BigDecimal.valueOf(33 + random.nextInt(18));
-        BigDecimal valorEmReais = milhasParaAdicionar.divide(fatorConversao, 2, BigDecimal.ROUND_HALF_UP);
+        int fatorConversao = 33 + random.nextInt(18);
+        BigDecimal bigDecimalMilhas = BigDecimal.valueOf(milhasParaAdicionar);
+        BigDecimal bigDecimalFator = BigDecimal.valueOf(fatorConversao);
+        BigDecimal valorEmReais = bigDecimalMilhas.divide(bigDecimalFator, 2, BigDecimal.ROUND_HALF_UP);
 
-        cliente.setSaldoMilhas(quantidadeAtualMilhas.add(milhasParaAdicionar));
+        cliente.setSaldoMilhas(quantidadeAtualMilhas + milhasParaAdicionar);
         clienteRepository.save(cliente);
         
         TransacaoMilha transacao = new TransacaoMilha();
@@ -105,7 +113,7 @@ public class ClienteService {
         TransacaoDTO dto = new TransacaoDTO();
         dto.setData(transacao.getData() != null ? transacao.getData() : OffsetDateTime.now());
         dto.setValorReais(transacao.getValorReais() != null ? BigDecimal.ZERO : transacao.getValorReais());
-        dto.setQuantidadeMilhas(transacao.getQuantidadeMilhas() != null ? transacao.getQuantidadeMilhas() : BigDecimal.ZERO);
+        dto.setQuantidadeMilhas(transacao.getQuantidadeMilhas() != null ? transacao.getQuantidadeMilhas() : 0);
         dto.setDescricao(transacao.getDescricao() != null ? transacao.getDescricao() : "");
         dto.setCodigoReserva(transacao.getCodigoReserva() != null ? transacao.getCodigoReserva() : "");
         dto.setTipo(transacao.getTipo().toString() != null ? transacao.getTipo().toString() : "");

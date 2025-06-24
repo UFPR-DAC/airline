@@ -23,8 +23,9 @@ public class Cliente {
     private String nome;
 
     @Column(nullable = false)
-    private BigDecimal saldoMilhas;
+    private Integer saldoMilhas;
 
+    @Embedded
     private Endereco endereco;
 
     public Cliente() {}
@@ -61,11 +62,11 @@ public class Cliente {
         this.nome = nome;
     }
 
-    public BigDecimal getSaldoMilhas() {
+    public Integer getSaldoMilhas() {
         return saldoMilhas;
     }
 
-    public void setSaldoMilhas(BigDecimal saldoMilhas) {
+    public void setSaldoMilhas(Integer saldoMilhas) {
         this.saldoMilhas = saldoMilhas;
     }
 

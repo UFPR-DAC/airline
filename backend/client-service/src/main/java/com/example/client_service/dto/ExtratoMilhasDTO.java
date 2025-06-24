@@ -9,10 +9,10 @@ import java.util.List;
 
 public class ExtratoMilhasDTO {
     private Long codigo;
-    private BigDecimal saldoMilhas;
+    private Integer saldoMilhas;
     private List<TransacaoDTO> transacoes;
 
-    public ExtratoMilhasDTO(Long codigo, BigDecimal saldoMilhas, List<TransacaoDTO> transacoesDTO) {
+    public ExtratoMilhasDTO(Long codigo, Integer saldoMilhas, List<TransacaoDTO> transacoesDTO) {
         this.codigo = codigo;
         this.saldoMilhas = saldoMilhas;
         this.transacoes = transacoesDTO;
@@ -30,11 +30,11 @@ public class ExtratoMilhasDTO {
         this.codigo = codigo;
     }
 
-    public BigDecimal getSaldoMilhas() {
+    public Integer getSaldoMilhas() {
         return saldoMilhas;
     }
 
-    public void setSaldoMilhas(BigDecimal saldoMilhas) {
+    public void setSaldoMilhas(Integer saldoMilhas) {
         this.saldoMilhas = saldoMilhas;
     }
 

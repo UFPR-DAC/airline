@@ -9,7 +9,7 @@ public class ClienteAuthDTO {
     private String cpf;
     private String email;
     private String nome;
-    private BigDecimal saldoMilhas;
+    private Integer saldoMilhas;
     private EnderecoDTO endereco;
 
     public ClienteAuthDTO(Cliente cliente) {
@@ -55,11 +55,11 @@ public class ClienteAuthDTO {
         this.nome = nome;
     }
 
-    public BigDecimal getSaldoMilhas() {
+    public Integer getSaldoMilhas() {
         return saldoMilhas;
     }
 
-    public void setSaldoMilhas(BigDecimal saldoMilhas) {
+    public void setSaldoMilhas(Integer saldoMilhas) {
         this.saldoMilhas = saldoMilhas;
     }
 

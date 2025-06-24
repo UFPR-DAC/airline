@@ -15,6 +15,8 @@ services:
     build:
       context: ./backend/auth-service
       dockerfile: Dockerfile
+    env_file:
+      - ./backend/auth-service/.env
     container_name: auth-service
     ports:
       - "8085:8084"
@@ -53,6 +55,8 @@ services:
     build:
       context: ./backend/client-service
       dockerfile: Dockerfile
+    env_file:
+      - ./backend/client-service/.env
     container_name: client-service
     environment:
       #- DATABASE_URL=postgresql://postgres:postgres@postgres-client:5432/client_db
@@ -82,6 +86,8 @@ services:
     build:
       context: ./backend/funcionario-service
       dockerfile: Dockerfile
+    env_file:
+      - ./backend/funcionario-service/.env
     container_name: funcionario-service
     environment:
       #- DATABASE_URL=postgresql://postgres:postgres@postgres-client:5432/client_db

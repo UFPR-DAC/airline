@@ -4,9 +4,9 @@ import java.math.BigDecimal;
 
 public class RespostaTransacaoDTO {
     private Long codigo;
-    private BigDecimal saldoMilhas;
+    private Integer saldoMilhas;
 
-    public RespostaTransacaoDTO(Long codigo, BigDecimal saldoMilhas) {
+    public RespostaTransacaoDTO(Long codigo, Integer saldoMilhas) {
         this.codigo = codigo;
         this.saldoMilhas = saldoMilhas;
     }
@@ -19,11 +19,11 @@ public class RespostaTransacaoDTO {
         this.codigo = codigo;
     }
 
-    public BigDecimal getSaldoMilhas() {
+    public Integer getSaldoMilhas() {
         return saldoMilhas;
     }
 
-    public void setSaldoMilhas(BigDecimal saldoMilhas) {
+    public void setSaldoMilhas(Integer saldoMilhas) {
         this.saldoMilhas = saldoMilhas;
     }
 }
