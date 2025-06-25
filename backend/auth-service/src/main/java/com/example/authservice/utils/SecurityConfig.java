@@ -1,6 +1,7 @@
 package com.example.authservice.utils;
 
 import com.example.authservice.service.AuthService;
+import com.example.authservice.service.UsuarioDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -18,7 +19,6 @@ import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
@@ -29,6 +29,7 @@ public class SecurityConfig {
         http.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.POST, "/login").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/cadastro").permitAll()
                         .anyRequest().authenticated()
                 )
                 .exceptionHandling(exception -> exception

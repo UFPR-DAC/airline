@@ -15,8 +15,8 @@ public class JwtService {
     private final long expiration;
 
     public JwtService(
-            @Value("${jwt.secret}") String secret,
-            @Value("${jwt.expiration}") long expiration) {
+            @Value("tadsUFPR2025DesenvolvimentoAplicacoesCorporativasGrupo6AndersonRafaelViviane") String secret,
+            @Value("86400000") long expiration) {
         System.out.println("jwt.secret: " + secret);
         System.out.println("jwt.expiration: " + expiration);
         if (secret == null || secret.trim().isEmpty() || secret.length() < 10) {
@@ -30,6 +30,7 @@ public class JwtService {
         return Jwts.builder()
                 .setSubject(email)
                 .claim("tipo", tipo)
+                .claim("email", email)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + expiration))
                 .signWith(key, SignatureAlgorithm.HS512)

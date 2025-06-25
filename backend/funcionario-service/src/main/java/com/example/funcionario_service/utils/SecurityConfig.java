@@ -18,6 +18,7 @@ public class SecurityConfig {
         http.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.POST, "/funcionarios").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/funcionarios").permitAll()
                         .anyRequest().authenticated()
                 )
                 .exceptionHandling(exception -> exception

@@ -1,9 +1,6 @@
 package com.example.client_service.controller;
 
-import com.example.client_service.dto.AdicionarMilhasDTO;
-import com.example.client_service.dto.ClienteDTO;
-import com.example.client_service.dto.ExtratoMilhasDTO;
-import com.example.client_service.dto.RespostaTransacaoDTO;
+import com.example.client_service.dto.*;
 import com.example.client_service.model.Cliente;
 import com.example.client_service.service.ClienteService;
 import jakarta.persistence.EntityNotFoundException;
@@ -13,8 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Map;
 
 @RestController
 @RequestMapping("/clientes")
@@ -30,6 +25,16 @@ public class ClienteController {
             return new ResponseEntity<>(novoCliente, HttpStatus.CREATED);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        }
+    }
+
+    @GetMapping("/busca-email/{email}")
+    public ResponseEntity<ClienteAuthDTO> buscarClientePorEmail(@PathVariable String email) {
+        try {
+            ClienteAuthDTO cliente = clienteService.buscarClientePorEmail(email);
+            return ResponseEntity.ok(cliente);
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
         }
     }
 

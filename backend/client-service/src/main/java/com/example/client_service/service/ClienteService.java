@@ -62,6 +62,12 @@ public class ClienteService {
         return new ClienteDTO(cliente);
     }
 
+    @Transactional(readOnly = true)
+    public ClienteAuthDTO buscarClientePorEmail(String email) {
+        Cliente cliente = clienteRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
+        return new ClienteAuthDTO(cliente);
+    }
+
     @Transactional
     public Cliente adicionarMilhas(Long codigoCliente, AdicionarMilhasDTO dto) {
         Cliente cliente = clienteRepository.findById(codigoCliente).orElseThrow(() -> new RuntimeException("Cliente não encontrado"));

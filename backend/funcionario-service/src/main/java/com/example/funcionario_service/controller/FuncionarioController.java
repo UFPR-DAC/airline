@@ -1,5 +1,6 @@
 package com.example.funcionario_service.controller;
 
+import com.example.funcionario_service.dto.FuncionarioAuthDTO;
 import com.example.funcionario_service.dto.FuncionarioDTO;
 import com.example.funcionario_service.dto.FuncionarioRequestDTO;
 import com.example.funcionario_service.model.Funcionario;
@@ -31,11 +32,21 @@ public class FuncionarioController {
         return ResponseEntity.ok(funcionarios);
     }
 
+    @GetMapping("/busca-email/{email}")
+    public ResponseEntity<FuncionarioAuthDTO> buscarFuncionarioPorEmail(@PathVariable String email) {
+        try {
+            FuncionarioAuthDTO cliente = funcionarioService.buscarFuncionarioPorEmail(email);
+            return ResponseEntity.ok(cliente);
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
     @PostMapping
     public ResponseEntity<FuncionarioDTO> criarFuncionario(@RequestBody FuncionarioRequestDTO requestDTO) {
         FuncionarioDTO novoFuncionario = funcionarioService.criarFuncionario(requestDTO);
         if(novoFuncionario != null) {
-            return new ResponseEntity<>(novoFuncionario, HttpStatus.CREATED);
+            return ResponseEntity.status(HttpStatus.CREATED).body(novoFuncionario);
         }
         return ResponseEntity.notFound().build();
     }

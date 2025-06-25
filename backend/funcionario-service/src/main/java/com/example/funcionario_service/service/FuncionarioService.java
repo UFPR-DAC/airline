@@ -1,5 +1,6 @@
 package com.example.funcionario_service.service;
 
+import com.example.funcionario_service.dto.FuncionarioAuthDTO;
 import com.example.funcionario_service.dto.FuncionarioCriadoRequest;
 import com.example.funcionario_service.dto.FuncionarioDTO;
 import com.example.funcionario_service.dto.FuncionarioRequestDTO;
@@ -56,6 +57,12 @@ public class FuncionarioService {
         }
 
         return new FuncionarioDTO(novoFuncionario);
+    }
+
+    @Transactional(readOnly = true)
+    public FuncionarioAuthDTO buscarFuncionarioPorEmail(String email) {
+        Funcionario funcionario = funcionarioRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("Funcionário não encontrado"));
+        return new FuncionarioAuthDTO(funcionario);
     }
 
     private void enviarEmail(String email, String senha, String tipo) {

@@ -4,19 +4,37 @@ import { SERVICE_CONFIG } from '../config/services.js';
 
 const router = express.Router();
 
+router.get('/internal/usuario', async (req, res) => {
+    const { email } = req.query;
+    if (!email) return res.status(400).json({ error: 'E-mail é obrigatório.' });
+
+    try {
+        const clienteResponse = await axios.get(`${SERVICE_CONFIG.CLIENTE.url}/busca-email/${email}`);
+        return res.json({ tipo: 'CLIENTE', ...clienteResponse.data });
+    } catch (err1) {
+        try {
+            const funcionarioResponse = await axios.get(`${SERVICE_CONFIG.FUNCIONARIO.url}/busca-email/${email}`);
+            return res.json({ tipo: 'FUNCIONARIO', ...funcionarioResponse.data });
+        } catch (err2) {
+            return res.status(404).json({ error: 'Usuário não encontrado em nenhum banco de dados.' });
+        }
+    }
+});
+
 router.post('/login', async (req, res) => {
     try {
+        console.log("Chamado o endpoint login no gateway!" + req.body);
         const authResponse = await axios.post(`${SERVICE_CONFIG.AUTH.url}/login`, req.body);
         console.log(authResponse)
         const { token, tipo } = authResponse.data;
-        const { userId } = authResponse.data?.usuario;
+        const { codigo } = authResponse.data?.usuario;
 
         let userResponse;
 
-        /*if (tipo === 'cliente') {
-            userResponse = await axios.get(`${SERVICE_CONFIG.CLIENT.url}/${userId}`);
+        if (tipo === 'CLIENTE') {
+            userResponse = await axios.get(`${SERVICE_CONFIG.CLIENTE.url}/${codigo}`);
         } else if (tipo === "FUNCIONARIO") {
-            userResponse = await axios.get(`${SERVICE_CONFIG.EMPLOYEE.url}/${userId}`);
+            userResponse = await axios.get(`${SERVICE_CONFIG.FUNCIONARIO.url}/${codigo}`);
         } else {
             return res.status(400).json({ message: 'Tipo de usuário inválido.' });
         }
@@ -26,7 +44,7 @@ router.post('/login', async (req, res) => {
         }
 
         authResponse.data.usuario = userResponse.data;
-        */
+
         return res.status(200).json({
             ...authResponse.data,
         });
@@ -42,7 +60,7 @@ router.post('/login', async (req, res) => {
 
 router.post('/logout', async (req, res) => {
     try {
-        console.log('Logout request received:', req.body);
+        console.log('Realizando logout...', req.body);
         const response = await axios.get(
             `${SERVICE_CONFIG.AUTH.url}/logout`,
             { headers: { Authorization: `Bearer ${req.body.token}` } }
@@ -52,7 +70,7 @@ router.post('/logout', async (req, res) => {
     } catch (e) {
         console.error('Erro no logout:', e.response?.data || e.message);
         return res.status(e.response?.status || 500).json(
-            e.response?.data || { message: 'Erro interno durante o logout.' }
+            e.response?.data || { message: 'Erro interno ao fazer logout.' }
         );
     }
 });

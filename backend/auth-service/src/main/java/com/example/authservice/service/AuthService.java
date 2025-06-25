@@ -5,12 +5,17 @@ import com.example.authservice.model.Usuario;
 import com.example.authservice.repository.UsuarioRepository;
 import com.example.authservice.security.JwtService;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.security.SecureRandom;
 
 @Service
 public class AuthService implements UserDetailsService {
@@ -19,6 +24,8 @@ public class AuthService implements UserDetailsService {
     private final JwtService jwtService;
     private final UsuarioRepository usuarioRepository;
     private final PasswordEncoder passwordEncoder;
+    @Autowired
+    private JavaMailSender mailSender;
 
     public AuthService(RabbitTemplate rabbitTemplate,
                        JwtService jwtService, UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder) {
@@ -142,10 +149,39 @@ public class AuthService implements UserDetailsService {
         return montarUsuarioResponsePorTipo(usuario);
     }
 
-
     public Usuario getUsuarioByEmail(String email) {
         Usuario usuario = usuarioRepository.findByEmail(email)
                 .orElseThrow(() -> new BadCredentialsException("Usuário não encontrado"));
         return usuario;
+    }
+
+    private void enviarEmail(String email, String senha) {
+        SimpleMailMessage mensagem = new SimpleMailMessage();
+        mensagem.setTo(email);
+        mensagem.setSubject("Sua conta foi criada com sucesso!");
+        mensagem.setText("Sua senha de acesso é " + senha);
+
+        mailSender.send(mensagem);
+        System.out.println("[EmailTestRunner] E-mail de novo usuário enviado!");
+    }
+
+    public Usuario cadastrarUsuario(String login, String tipo) {
+        if (usuarioRepository.findByEmail(login).isPresent()) {
+            throw new RuntimeException("Login com esse e-mail já existe");
+        }
+
+        int numeroAleatorio = 1000 + new SecureRandom().nextInt(9000);
+        String senhaAleatoria = String.valueOf(numeroAleatorio);
+        String senhaHash = passwordEncoder.encode(senhaAleatoria);
+        Usuario usuario = new Usuario(login, senhaHash, tipo.toUpperCase());
+
+        try {
+            enviarEmail(usuario.getEmail(), senhaAleatoria);
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println("Erro ao enviar e-mail para novo usuário: " + login + ". " + e.getMessage());
+        }
+
+        return usuarioRepository.save(usuario);
     }
 }

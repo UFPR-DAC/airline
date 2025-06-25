@@ -2,8 +2,6 @@ package com.example.client_service.dto;
 
 import com.example.client_service.model.Cliente;
 
-import java.math.BigDecimal;
-
 public class ClienteAuthDTO {
     private Long codigo;
     private String cpf;
