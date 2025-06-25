@@ -1,12 +1,10 @@
 package com.example.authservice.dto;
 
-import com.example.authservice.model.Usuario;
-
 public class AuthResponse {
     private String access_token;
     private String token_type = "Bearer";
     private String tipo;
-    private Usuario usuario;
+    private UsuarioEmailDTO usuario;
 
     public String getAccess_token() { return access_token; }
     public void setAccess_token(String access_token) { this.access_token = access_token; }
@@ -19,11 +17,11 @@ public class AuthResponse {
     }
     public void setTipo(String tipo) { this.tipo = tipo; }
 
-    public Usuario getUsuario() {
+    public UsuarioEmailDTO getUsuario() {
         return usuario;
     }
 
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
+    public void setUsuario(UsuarioEmailDTO usuarioEmail) {
+        this.usuario = usuarioEmail;
     }
 }

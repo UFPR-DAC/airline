@@ -23,18 +23,25 @@ router.get('/internal/usuario', async (req, res) => {
 
 router.post('/login', async (req, res) => {
     try {
-        console.log("Chamado o endpoint login no gateway!" + req.body);
+        console.log("Chamado o endpoint login no gateway!", JSON.stringify(req.body));
         const authResponse = await axios.post(`${SERVICE_CONFIG.AUTH.url}/login`, req.body);
-        console.log(authResponse)
-        const { token, tipo } = authResponse.data;
-        const { codigo } = authResponse.data?.usuario;
+        console.log("auth response: ", JSON.stringify(authResponse.data, null, 2));
+        const { access_token, token_type, tipo, usuario } = authResponse.data;
+        const email = usuario?.email;
+
+        if (!usuario) {
+            console.error("Resposta do auth service não contém 'usuario' ou 'email':", authResponse.data);
+            return res.status(500).json({ message: "Falha ao obter e-mail do usuário autenticado." });
+        }
 
         let userResponse;
 
         if (tipo === 'CLIENTE') {
-            userResponse = await axios.get(`${SERVICE_CONFIG.CLIENTE.url}/${codigo}`);
+            console.log("buscando cliente " + email);
+            userResponse = await axios.get(`${SERVICE_CONFIG.CLIENTE.url}/busca-email/${encodeURIComponent(email)}`);
         } else if (tipo === "FUNCIONARIO") {
-            userResponse = await axios.get(`${SERVICE_CONFIG.FUNCIONARIO.url}/${codigo}`);
+            console.log("buscando funcionario " + email);
+            userResponse = await axios.get(`${SERVICE_CONFIG.FUNCIONARIO.url}/busca-email/${encodeURIComponent(email)}`);
         } else {
             return res.status(400).json({ message: 'Tipo de usuário inválido.' });
         }
@@ -46,7 +53,10 @@ router.post('/login', async (req, res) => {
         authResponse.data.usuario = userResponse.data;
 
         return res.status(200).json({
-            ...authResponse.data,
+            access_token,
+            token_type,
+            tipo,
+            usuario: userResponse.data
         });
 
     } catch (e) {

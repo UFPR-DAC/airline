@@ -85,7 +85,6 @@ public class AuthService implements UserDetailsService {
         authResponse.setAccess_token(token);
         authResponse.setToken_type(jwtService.getTokenType());
         authResponse.setTipo(tipo);
-        authResponse.setUsuario(usuarioResponse);
         return authResponse;
     }
 

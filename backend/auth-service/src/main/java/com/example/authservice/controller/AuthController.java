@@ -3,7 +3,7 @@ package com.example.authservice.controller;
 import com.example.authservice.dto.AuthRequest;
 import com.example.authservice.dto.AuthResponse;
 import com.example.authservice.dto.CadastroRequest;
-import com.example.authservice.dto.UsuarioResponse;
+import com.example.authservice.dto.UsuarioEmailDTO;
 import com.example.authservice.model.Usuario;
 import com.example.authservice.security.JwtService;
 
@@ -11,24 +11,24 @@ import com.example.authservice.service.AuthService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
+
+import java.util.NoSuchElementException;
 
 @RestController
 public class AuthController {
     private final AuthenticationManager authenticationManager;
     private final AuthService authService;
     private final JwtService jwtService;
+    private final PasswordEncoder passwordEncoder;
 
-    public AuthController(AuthenticationManager authenticationManager, AuthService authService, JwtService jwtService) {
+    public AuthController(AuthenticationManager authenticationManager, AuthService authService, JwtService jwtService, PasswordEncoder passwordEncoder) {
         this.authenticationManager = authenticationManager;
         this.authService = authService;
         this.jwtService = jwtService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @PostMapping("/login")
@@ -36,30 +36,25 @@ public class AuthController {
         System.out.println("Chamando ms auth com request: " + request.getLogin());
         try {
             System.out.println("recebi o request: " + request);
-            Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(request.getLogin(), request.getSenha())
-            );
-            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-            Usuario usuario = authService.getUsuarioByEmail(userDetails.getUsername());
-            String token = jwtService.generateToken(userDetails.getUsername(), usuario.getTipo());
-
-            //chamada pro API gateway
-            RestTemplate restTemplate = new RestTemplate();
-            String gatewayUrl = "http://localhost:3000/internal/usuario?email=" + userDetails.getUsername();
-
-            ResponseEntity<Object> usuarioResponse = restTemplate.getForEntity(gatewayUrl, Object.class);
-            Object usuarioCompleto = usuarioResponse.getBody();
+            Usuario usuario = authService.getUsuarioByEmail(request.getLogin());
+            if (!passwordEncoder.matches(request.getSenha(), usuario.getSenha())) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Senha incorreta");
+            }
+            String token = jwtService.generateToken(usuario.getEmail(), usuario.getTipo());
+            UsuarioEmailDTO usuarioEmail = new UsuarioEmailDTO(usuario.getEmail());
 
             AuthResponse authResponse = new AuthResponse();
             authResponse.setAccess_token(token);
             authResponse.setToken_type("Bearer");
             authResponse.setTipo(usuario.getTipo());
-            authResponse.setUsuario((Usuario) usuarioCompleto);
+            authResponse.setUsuario(usuarioEmail);
 
             return ResponseEntity.ok(authResponse);
-
-        } catch (BadCredentialsException e) {
-            return ResponseEntity.status(401).body("Credenciais inválidas");
+        } catch(UsernameNotFoundException | NoSuchElementException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Usuário não encontrado");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro interno no login");
         }
     }
 
