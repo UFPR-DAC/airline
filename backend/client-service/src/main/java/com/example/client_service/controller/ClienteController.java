@@ -28,12 +28,14 @@ public class ClienteController {
         }
     }
 
-    @GetMapping("/busca-email/{email}")
-    public ResponseEntity<ClienteAuthDTO> buscarClientePorEmail(@PathVariable String email) {
+    @GetMapping("/busca-email")
+    public ResponseEntity<ClienteAuthDTO> buscarClientePorEmail(@RequestParam String email) {
+        System.out.println("GET em /busca-email?email=" + email);
         try {
             ClienteAuthDTO cliente = clienteService.buscarClientePorEmail(email);
             return ResponseEntity.ok(cliente);
         } catch (RuntimeException e) {
+            System.out.println("Erro ao buscar o email " + email);
             return ResponseEntity.notFound().build();
         }
     }

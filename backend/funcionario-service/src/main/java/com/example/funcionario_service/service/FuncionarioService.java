@@ -48,14 +48,6 @@ public class FuncionarioService {
 
         Funcionario novoFuncionario = funcionarioRepository.save(funcionario);
 
-        String senha = String.valueOf(new Random().nextInt(9000) + 1000);
-        try {
-            enviarEmail(funcionario.getEmail(), senha, "FUNCIONARIO");
-            notificarAuthService(funcionario.getEmail(), senha, "FUNCIONARIO");
-        } catch (Exception e) {
-            System.err.println("Erro ao enviar e-mail com senha para " + funcionario.getEmail() + ": " + e.getMessage());
-        }
-
         return new FuncionarioDTO(novoFuncionario);
     }
 
@@ -63,16 +55,6 @@ public class FuncionarioService {
     public FuncionarioAuthDTO buscarFuncionarioPorEmail(String email) {
         Funcionario funcionario = funcionarioRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("Funcionário não encontrado"));
         return new FuncionarioAuthDTO(funcionario);
-    }
-
-    private void enviarEmail(String email, String senha, String tipo) {
-        SimpleMailMessage mensagem = new SimpleMailMessage();
-        mensagem.setTo(email);
-        mensagem.setSubject("Sua conta foi criada com sucesso!");
-        mensagem.setText("Sua senha de acesso é " + senha);
-
-        mailSender.send(mensagem);
-        System.out.println("[EmailTestRunner] E-mail de novo funcionário enviado!");
     }
 
     private void notificarAuthService(String email, String senha, String tipo) {

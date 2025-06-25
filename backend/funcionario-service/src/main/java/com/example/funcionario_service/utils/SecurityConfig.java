@@ -19,6 +19,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.POST, "/funcionarios").permitAll()
                         .requestMatchers(HttpMethod.GET, "/funcionarios").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/funcionarios/busca-email").permitAll()
                         .anyRequest().authenticated()
                 )
                 .exceptionHandling(exception -> exception

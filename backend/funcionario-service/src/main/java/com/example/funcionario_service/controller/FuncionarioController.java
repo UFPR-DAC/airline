@@ -32,9 +32,9 @@ public class FuncionarioController {
         return ResponseEntity.ok(funcionarios);
     }
 
-    @GetMapping("/busca-email/{email}")
-    public ResponseEntity<FuncionarioAuthDTO> buscarFuncionarioPorEmail(@PathVariable String email) {
-        System.out.println("chamada para buscar o email " + email);
+    @GetMapping("/busca-email")
+    public ResponseEntity<FuncionarioAuthDTO> buscarFuncionarioPorEmail(@RequestParam String email) {
+        System.out.println("GET em /busca-email?email=" + email);
         try {
             FuncionarioAuthDTO cliente = funcionarioService.buscarFuncionarioPorEmail(email);
             return ResponseEntity.ok(cliente);

@@ -9,6 +9,8 @@ import com.example.client_service.repository.ClienteRepository;
 import com.example.client_service.repository.TransacaoMilhaRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -18,6 +20,7 @@ import java.math.BigDecimal;
 import java.security.SecureRandom;
 import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 @Service
@@ -27,6 +30,8 @@ public class ClienteService {
     private ClienteRepository clienteRepository;
     @Autowired
     private TransacaoMilhaRepository transacaoMilhaRepository;
+    @Autowired
+    private JavaMailSender mailSender;
 
     @Transactional
     public ClienteDTO criarCliente(ClienteDTO dto) {

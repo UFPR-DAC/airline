@@ -4,6 +4,7 @@ import com.example.authservice.dto.*;
 import com.example.authservice.model.Usuario;
 import com.example.authservice.repository.UsuarioRepository;
 import com.example.authservice.security.JwtService;
+import com.mongodb.DuplicateKeyException;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
@@ -155,16 +156,19 @@ public class AuthService implements UserDetailsService {
     }
 
     private void enviarEmail(String email, String senha) {
+        System.out.println("Função enviar email chamada...");
         SimpleMailMessage mensagem = new SimpleMailMessage();
         mensagem.setTo(email);
         mensagem.setSubject("Sua conta foi criada com sucesso!");
         mensagem.setText("Sua senha de acesso é " + senha);
 
         mailSender.send(mensagem);
-        System.out.println("[EmailTestRunner] E-mail de novo usuário enviado!");
+        System.out.println("[EmailTestRunner] E-mail de novo funcionário enviado!");
+        System.out.println("Sua senha é "+ senha);
     }
 
     public Usuario cadastrarUsuario(String login, String tipo) {
+        System.out.println("Função cadastrar usuário chamada...");
         if (usuarioRepository.findByEmail(login).isPresent()) {
             throw new RuntimeException("Login com esse e-mail já existe");
         }
@@ -175,12 +179,20 @@ public class AuthService implements UserDetailsService {
         Usuario usuario = new Usuario(login, senhaHash, tipo.toUpperCase());
 
         try {
+            usuarioRepository.save(usuario);
+        } catch (DuplicateKeyException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Login com esse ID já existe");
+        }
+
+        try {
             enviarEmail(usuario.getEmail(), senhaAleatoria);
         } catch (Exception e) {
             e.printStackTrace();
+            System.out.println("Senha aleatória é " + senhaAleatoria);
             System.err.println("Erro ao enviar e-mail para novo usuário: " + login + ". " + e.getMessage());
         }
 
-        return usuarioRepository.save(usuario);
+        return usuario;
     }
 }

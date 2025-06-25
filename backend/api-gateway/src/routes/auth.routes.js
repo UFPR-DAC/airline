@@ -38,10 +38,14 @@ router.post('/login', async (req, res) => {
 
         if (tipo === 'CLIENTE') {
             console.log("buscando cliente " + email);
-            userResponse = await axios.get(`${SERVICE_CONFIG.CLIENTE.url}/busca-email/${encodeURIComponent(email)}`);
+            const urlCliente = `${SERVICE_CONFIG.CLIENTE.url}/busca-email?email=${encodeURIComponent(email)}`;
+            console.log(urlCliente);
+            userResponse = await axios.get(urlCliente);
         } else if (tipo === "FUNCIONARIO") {
             console.log("buscando funcionario " + email);
-            userResponse = await axios.get(`${SERVICE_CONFIG.FUNCIONARIO.url}/busca-email/${encodeURIComponent(email)}`);
+            const urlFuncionario = `${SERVICE_CONFIG.FUNCIONARIO.url}/busca-email?email=${encodeURIComponent(email)}`
+            console.log(urlFuncionario);
+            userResponse = await axios.get(urlFuncionario);
         } else {
             return res.status(400).json({ message: 'Tipo de usuário inválido.' });
         }
