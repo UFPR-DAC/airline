@@ -67,14 +67,22 @@ public class FuncionarioService {
     }
 
     @Transactional
-    public FuncionarioDTO alterarFuncionario(Long id, FuncionarioRequestDTO requestDTO) {
+    public FuncionarioDTO alterarFuncionario(Long id, FuncionarioDTO requestDTO) {
         Optional<Funcionario> funcionarioOpt = funcionarioRepository.findById(id);
         if (funcionarioOpt.isPresent()) {
             Funcionario funcionario = funcionarioOpt.get();
-            
-            funcionario.setNome(requestDTO.getNome());
-            funcionario.setEmail(requestDTO.getEmail());
-            funcionario.setTelefone(requestDTO.getTelefone());
+
+            if (requestDTO.getNome() != null) {
+                funcionario.setNome(requestDTO.getNome());
+            }
+            if (requestDTO.getEmail() != null) {
+                funcionario.setEmail(requestDTO.getEmail());
+            }
+            if (requestDTO.getTelefone() != null) {
+                funcionario.setTelefone(requestDTO.getTelefone());
+            }
+            funcionario.setCodigo(requestDTO.getCodigo());
+            funcionario.setCpf(requestDTO.getCpf());
 
             Funcionario funcionarioAtualizado = funcionarioRepository.save(funcionario);
 

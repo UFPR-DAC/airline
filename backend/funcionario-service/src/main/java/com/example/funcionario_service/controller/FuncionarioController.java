@@ -54,7 +54,7 @@ public class FuncionarioController {
     }
 
     @PutMapping("/{codigoFuncionario}")
-    public ResponseEntity<FuncionarioDTO> alterarFuncionario(@PathVariable Long codigoFuncionario, @RequestBody FuncionarioRequestDTO requestDTO) {
+    public ResponseEntity<FuncionarioDTO> alterarFuncionario(@PathVariable Long codigoFuncionario, @RequestBody FuncionarioDTO requestDTO) {
         FuncionarioDTO funcionarioAtualizado = funcionarioService.alterarFuncionario(codigoFuncionario, requestDTO);
         if (funcionarioAtualizado != null) {
             return ResponseEntity.ok(funcionarioAtualizado);

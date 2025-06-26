@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router'
 
 export default function FuncionarioHome() {
     const navigate = useNavigate()
-    
+
     const nome = localStorage.getItem("nome");
 
     const colunas = [
@@ -51,6 +51,9 @@ export default function FuncionarioHome() {
         // Caso contrário, não fazer nada
     }
 
+    function handleListaFuncionarios() {
+        navigate("/funcionario/visualizar")
+    }
 
     return (
         <>
@@ -59,6 +62,7 @@ export default function FuncionarioHome() {
                 <div className="flex justify-between items-center">
                     <h1 className="text-2xl font-bold mb-6 pr-100">Boas vindas, {nome}</h1>
                 </div>
+                <button onClick={handleListaFuncionarios} className="cursor-pointer">Ver lista de funcionários</button>
 
             </div>
             <div className="w-full max-w-6xl bg-white rounded-lg shadow-md">

@@ -65,7 +65,7 @@ export default function EditarFuncionario() {
 
                 <div className="flex flex-row w-84">
                     <button className="cursor-pointer mr-25 w-40 text-white bg-gray-600 p-4 rounded-full hover:bg-gray-500"
-                            onClick={() => navigate('/funcionario')} type="button">
+                            onClick={() => navigate('/funcionario/visualizar')} type="button">
                         Voltar
                     </button>
                     <button className="cursor-pointer w-40 text-white bg-green-600 p-4 rounded-full hover:bg-green-500"

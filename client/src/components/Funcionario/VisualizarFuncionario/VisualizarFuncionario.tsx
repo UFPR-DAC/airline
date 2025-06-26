@@ -1,8 +1,27 @@
+import axios from "axios";
 import Tabela from "../../Tabela/tabela";
 import { useNavigate } from 'react-router'
+import { useEffect, useState } from "react";
 
 export default function VisualizarFuncionario() {
     const navigate = useNavigate()
+
+       const [listaFuncionarios, setListaFuncionarios] = useState<any[]>([]);
+
+useEffect(() => {
+  const fetchFuncionarios = async () => {
+    try {
+      const response = await axios.get("http://localhost:3000/funcionarios");
+      if (response?.data) {
+        setListaFuncionarios(response.data);
+      }
+    } catch (error) {
+      console.error("Erro ao buscar funcionários:", error);
+    }
+  };
+
+  fetchFuncionarios();
+}, []);
 
     const colunas = [
         { campo: "nome", titulo: "Nome" },
@@ -55,7 +74,7 @@ export default function VisualizarFuncionario() {
 
             </div>
             <div className="w-full max-w-6xl bg-white p-6 rounded-lg shadow-md">
-                <Tabela colunas={colunas} dados={dados} buttons={buttons} />
+                <Tabela colunas={colunas} dados={listaFuncionarios} buttons={buttons} />
             </div>
         </>
     );
