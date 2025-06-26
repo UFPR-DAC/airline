@@ -163,7 +163,7 @@ public class AuthService implements UserDetailsService {
         mensagem.setText("Sua senha de acesso é " + senha);
 
         mailSender.send(mensagem);
-        System.out.println("[EmailTestRunner] E-mail de novo funcionário enviado!");
+        System.out.println("[EmailTestRunner] E-mail de novo usuário enviado!");
         System.out.println("Sua senha é "+ senha);
     }
 
