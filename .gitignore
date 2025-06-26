@@ -5,6 +5,14 @@ build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 
+**/.env
+backend/api-gateway/.env
+backend/auth-service/.env
+backend/client-service/.env
+backend/funcionario-service/.env
+backend/reserva-service/.env
+backend/voo-service/.env
+
 ### STS ###
 .apt_generated
 .classpath
@@ -37,3 +45,5 @@ out/
 .vscode/
 
 node_modules/
+backend/**/.env
+**/.env
