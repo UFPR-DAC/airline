@@ -19,6 +19,7 @@ const Funcionario = lazy(() => import('../src/pages/Funcionario'))
 const FuncionarioCadastrar = lazy(
 	() => import('../src/components/Funcionario/CadastrarFuncionario/CadastrarFuncionario')
 )
+const SignupFuncionario = lazy(() => import("./pages/SignupFuncionario/SignupFuncionario"));
 const EditarFuncionario = lazy(() => import('../src/components/Funcionario/EditarFuncionario/EditarFuncionario'))
 const ConfirmacaoEmbarque = lazy(() => import('../src/pages/ConfirmacaoEmbarque'))
 const queryClient = new QueryClient()
@@ -46,7 +47,8 @@ function App() {
 									<Route path="/cliente/:clientId" element={<ClientDashboard />} />
 									<Route path="/cliente/:clientId/reservas" element={<Reservations />} />
 									<Route path="/cliente/:clientId/milhas/comprar" element={<ComprarMilhas />} />
-									<Route path="/funcionario" element={<Funcionario />} />
+									<Route path="/funcionario/cadastro" element={<SignupFuncionario />} />
+									<Route path="/funcionario/:employeeId" element={<Funcionario />} />
 									<Route path="/funcionario/visualizar" element={<VisualizarFuncionario />} />
 									<Route
 										path="/funcionario/cadastrar/funcionario"

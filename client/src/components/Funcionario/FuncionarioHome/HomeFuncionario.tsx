@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router'
 
 export default function FuncionarioHome() {
     const navigate = useNavigate()
+    
+    const nome = localStorage.getItem("nome");
 
     const colunas = [
         { campo: "dataHora", titulo: "Data/Hora" },
@@ -55,7 +57,7 @@ export default function FuncionarioHome() {
 
             <div className="">
                 <div className="flex justify-between items-center">
-                    <h1 className="text-2xl font-bold mb-6 pr-100">Home Funcionários</h1>
+                    <h1 className="text-2xl font-bold mb-6 pr-100">Boas vindas, {nome}</h1>
                 </div>
 
             </div>

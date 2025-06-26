@@ -7,6 +7,7 @@ import axios from 'axios'
 import { isCepValid, limparMascaraCep } from '../../utils/cep/cep'
 import { useEffect, useRef } from 'react'
 import { estadosBrasil } from '../../utils/uf/uf'
+import { useNavigate } from 'react-router-dom'
 
 export default function Signup() {
 	const {
@@ -20,8 +21,27 @@ export default function Signup() {
 		mode: 'onChange',
 	})
 	const registerWithMask = useHookFormMask(register)
-	const onSubmit = (data: UserSignup) => {
-		alert(`Usuário ${data.nome} criado!`)
+	const navigate = useNavigate();
+
+	const onSubmit = async (data: UserSignup) => {
+		const payload = {
+			cpf: data.cpf,
+			email: data.email,
+			nome: data.nome,
+			saldo_milhas: 0,
+			endereco: {
+				cep: data.cep,
+				rua: data.logradouro,
+				numero: data.numero,
+				complemento: data.complemento,
+				bairro: data.bairro,
+				cidade: data.cidade,
+				uf: data.estado
+			}
+		}
+		const response = await axios.post("http://localhost:3000/clientes", payload);
+		alert(`Usuário ${response?.data?.nome} criado!`)
+		navigate("/login");
 	}
 
 	const cepSujo = watch('cep')

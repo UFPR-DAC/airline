@@ -1,13 +1,12 @@
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useAuth } from '../../contexts/AuthContext'
 import { UserLogin } from '../../validations/user'
 import { useNavigate } from 'react-router'
-import { fetchUserByEmail } from '../../services/user'
+import axios from 'axios'
 
 export default function ClientLogin() {
-	const { login } = useAuth()
 	const navigate = useNavigate()
+
 	const {
 		register,
 		handleSubmit,
@@ -17,15 +16,26 @@ export default function ClientLogin() {
 		mode: 'onChange',
 	})
 	const onSubmit = async (data: UserLogin) => {
-		const userData = await fetchUserByEmail(data.email)
-		if (!userData) {
-			alert('Usuário não encontrado!')
-			return
-		} else {
-			console.log(userData)
+		const payload = {
+			login: data.email,
+			senha: data.senha
 		}
-		login(userData)
-		navigate(`/cliente/${userData.cpf}`)
+		const response = await axios.post("http://localhost:3000/login", payload);
+		localStorage.setItem("token", response?.data?.access_token);
+		localStorage.setItem("nome", response?.data?.usuario?.nome);
+		if (response?.data?.tipo === "CLIENTE") {
+			navigate(`/cliente/${response?.data?.usuario?.codigo}`)
+		} else if (response?.data?.tipo === "FUNCIONARIO") {
+			navigate(`/funcionario/${response?.data?.usuario?.codigo}`)
+		}
+	}
+
+	function handleNovoCliente() {
+		navigate("/cadastro");
+	}
+
+	function handleNovoFuncionario() {
+		navigate("/funcionario/cadastro")
 	}
 
 	return (
@@ -46,6 +56,8 @@ export default function ClientLogin() {
 					<input id="senha" type="password" {...register('senha')} className="input-base" />
 					{errors.senha && <p className="input-error-msg">{errors.senha?.message}</p>}
 				</div>
+				<button onClick={handleNovoCliente} className='underline cursor-pointer'>Cadastro de novo cliente</button>
+				<button onClick={handleNovoFuncionario} className='underline cursor-pointer'>Cadastro de novo funcionário</button>
 				<button className="cursor-pointer w-80 text-white bg-green-600 p-4 rounded-full hover:bg-green-500">
 					Entrar
 				</button>
